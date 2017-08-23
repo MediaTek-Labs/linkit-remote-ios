@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--LinkIt Remote-->
+        <!--Devices-->
         <scene sceneID="Mzf-TN-qRe">
             <objects>
                 <tableViewController id="bPZ-1c-ufy" customClass="DeviceTableViewController" customModule="LinkIt_Remote" customModuleProvider="target" sceneMemberID="viewController">
@@ -23,7 +23,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tDr-wd-9HN" id="6B4-Gr-Em0">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" distribution="equalCentering" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZS8-wN-Yld">
@@ -64,41 +64,22 @@
                             <outlet property="delegate" destination="bPZ-1c-ufy" id="cQ4-tE-CVG"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="LinkIt Remote" id="qNz-NI-Zrr">
+                    <navigationItem key="navigationItem" title="Devices" id="qNz-NI-Zrr">
                         <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="v5o-Tq-NRm"/>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="d3i-jt-vhT">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="osj-q7-hS0">
+                        <barButtonItem key="rightBarButtonItem" id="aGx-vI-OvC">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="VfN-mJ-wnL">
                                 <rect key="frame" x="337" y="11" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="openHelpPage" destination="bPZ-1c-ufy" eventType="touchUpInside" id="f5F-7N-ePA"/>
+                                </connections>
                             </button>
-                            <connections>
-                                <segue destination="lL9-o9-omU" kind="show" id="Qkk-l6-iPZ"/>
-                            </connections>
                         </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SP4-EI-ECJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="488.80000000000001" y="-4.0479760119940034"/>
-        </scene>
-        <!--How to Use-->
-        <scene sceneID="VKl-rK-3f7">
-            <objects>
-                <viewController id="lL9-o9-omU" customClass="HelpViewController" customModule="LinkIt_Remote" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="hCO-bZ-OkE"/>
-                        <viewControllerLayoutGuide type="bottom" id="D2H-ch-s3f"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="FKo-uv-FIl">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="How to Use" id="bd9-U1-SSU"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="YAk-rp-zbH" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1388" y="-299"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="FuX-Pp-Ybz">

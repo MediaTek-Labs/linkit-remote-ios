@@ -8,11 +8,19 @@
 
 import UIKit
 
+
 class DeviceTableViewController: UITableViewController {
     //MARK: properties
     var devices : [Device] = [Device]()
     
+    //MARK: actions
+    @IBAction func openHelpPage() {
+        let url = NSURL(string:"http://labs.mediatek.com/")! as URL
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
     
+    
+    //MARK: protocols
 
     override func viewDidLoad() {
         super.viewDidLoad()
