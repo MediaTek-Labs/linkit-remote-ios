@@ -14,48 +14,53 @@
         <scene sceneID="Mzf-TN-qRe">
             <objects>
                 <tableViewController id="bPZ-1c-ufy" customClass="DeviceTableViewController" customModule="LinkIt_Remote" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" sectionHeaderHeight="28" sectionFooterHeight="28" id="KgB-rm-tQW">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" id="KgB-rm-tQW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <progressView key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" id="ov5-yE-C2v">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="2"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </progressView>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="DeviceTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="DeviceTableViewCell" rowHeight="90" id="tDr-wd-9HN" customClass="DeviceTableViewCell" customModule="LinkIt_Remote">
-                                <rect key="frame" x="0.0" y="28" width="375" height="90"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="DeviceTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="DeviceTableViewCell" id="tDr-wd-9HN" customClass="DeviceTableViewCell" customModule="LinkIt_Remote">
+                                <rect key="frame" x="0.0" y="30" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tDr-wd-9HN" id="6B4-Gr-Em0">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" distribution="equalCentering" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZS8-wN-Yld">
-                                            <rect key="frame" x="12" y="8" width="143" height="55"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HtC-g3-0N5">
-                                                    <rect key="frame" x="0.0" y="0.0" width="143" height="29"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="400" text="80:4C:28:54" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FER-Qp-NWX">
-                                                    <rect key="frame" x="0.0" y="37" width="143" height="18"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="HtC-g3-0N5" firstAttribute="top" secondItem="ZS8-wN-Yld" secondAttribute="top" id="VPt-Br-sW4"/>
-                                                <constraint firstItem="HtC-g3-0N5" firstAttribute="leading" secondItem="ZS8-wN-Yld" secondAttribute="leading" id="ilp-m8-0wm"/>
-                                            </constraints>
-                                        </stackView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Device Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HtC-g3-0N5">
+                                            <rect key="frame" x="8" y="8" width="254" height="29"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="400" fixedFrame="YES" text="80:4C:28:54" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FER-Qp-NWX">
+                                            <rect key="frame" x="8" y="45" width="254" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RSSI Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzQ-mz-hdd">
+                                            <rect key="frame" x="281.5" y="29" width="85.5" height="20.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="ZS8-wN-Yld" firstAttribute="leading" secondItem="6B4-Gr-Em0" secondAttribute="leadingMargin" constant="4" id="Jgs-g6-PBz"/>
-                                        <constraint firstItem="ZS8-wN-Yld" firstAttribute="top" secondItem="6B4-Gr-Em0" secondAttribute="topMargin" id="rxS-sA-xYf"/>
+                                        <constraint firstItem="dzQ-mz-hdd" firstAttribute="centerY" secondItem="6B4-Gr-Em0" secondAttribute="centerY" id="FWM-kP-QcG"/>
+                                        <constraint firstItem="dzQ-mz-hdd" firstAttribute="trailing" secondItem="6B4-Gr-Em0" secondAttribute="trailingMargin" id="s28-gP-7y9"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="addressLabel" destination="FER-Qp-NWX" id="7Y8-6B-Uqo"/>
                                     <outlet property="nameLabel" destination="HtC-g3-0N5" id="L3y-nf-z8f"/>
+                                    <outlet property="rssiLabel" destination="dzQ-mz-hdd" id="qGS-aY-Dtb"/>
+                                    <segue destination="0tg-PM-CFJ" kind="show" identifier="ShowRemote" id="FgM-3M-Sza"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -65,7 +70,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Devices" id="qNz-NI-Zrr">
-                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="v5o-Tq-NRm"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="v5o-Tq-NRm">
+                            <connections>
+                                <action selector="refreshDeviceList:" destination="bPZ-1c-ufy" id="foI-8c-aso"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" id="aGx-vI-OvC">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="VfN-mJ-wnL">
                                 <rect key="frame" x="337" y="11" width="22" height="22"/>
@@ -76,10 +85,49 @@
                             </button>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="refreshButton" destination="v5o-Tq-NRm" id="Uh8-4u-8ib"/>
+                        <outlet property="scanProgressView" destination="ov5-yE-C2v" id="GF9-fh-12L"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SP4-EI-ECJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="488.80000000000001" y="-4.0479760119940034"/>
+        </scene>
+        <!--Remote Device-->
+        <scene sceneID="SeG-Mu-1zr">
+            <objects>
+                <viewController storyboardIdentifier="RemoteViewController" title="Remote Device" id="0tg-PM-CFJ" customClass="RemoteViewController" customModule="LinkIt_Remote" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="I9P-qy-rSl"/>
+                        <viewControllerLayoutGuide type="bottom" id="W30-Ql-IAd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0ts-mG-0Nw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mB-b9-gyq">
+                                <rect key="frame" x="16" y="72" width="343" height="587"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9mB-b9-gyq" firstAttribute="trailing" secondItem="0ts-mG-0Nw" secondAttribute="trailingMargin" id="Sj6-2E-gWU"/>
+                            <constraint firstItem="W30-Ql-IAd" firstAttribute="top" secondItem="9mB-b9-gyq" secondAttribute="bottom" constant="8" symbolic="YES" id="beB-vd-p5n"/>
+                            <constraint firstItem="9mB-b9-gyq" firstAttribute="top" secondItem="I9P-qy-rSl" secondAttribute="bottom" constant="8" symbolic="YES" id="pn0-1I-IjI"/>
+                            <constraint firstItem="9mB-b9-gyq" firstAttribute="leading" secondItem="0ts-mG-0Nw" secondAttribute="leadingMargin" id="s0a-v7-40Q"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Device" id="AhM-LA-4YX"/>
+                    <connections>
+                        <outlet property="navBar" destination="AhM-LA-4YX" id="tbl-Be-nwE"/>
+                        <outlet property="remoteView" destination="9mB-b9-gyq" id="Kg1-Bf-WJd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="goT-z0-3Pt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1520.8" y="-4.0479760119940034"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="FuX-Pp-Ybz">

@@ -12,15 +12,20 @@ import CoreBluetooth
 class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate {
     
     //MARK: defines
-    
     let SERVICE_UUID = CBUUID(string: "19B10010-E8F2-537E-4F6C-D104768A1214")
     
     //MARK: properties
-    
     var devices : [Device] = [Device]()
     var manager : CBCentralManager!
     
+    //MARK: controls
+    @IBOutlet weak var refreshButton: UIBarButtonItem!
+    @IBOutlet weak var scanProgressView: UIProgressView!
+
     //MARK: actions
+    @IBAction func refreshDeviceList(_ sender: Any) {
+        self.startScan()
+    }
     
     @IBAction func openHelpPage() {
         let url = NSURL(string:"http://labs.mediatek.com/")! as URL
@@ -32,11 +37,12 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        loadSampleDevices()
-        
+
         // Instantialte BLE manager
         manager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey : NSNumber(value:true)])
+        
+        scanProgressView.isHidden = true
+        loadSampleDevices()
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,26 +50,7 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         // Dispose of any resources that can be recreated.
     }
     
-    //MARK: CentralManagerDelegates
-    func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        print("state= \(central.state)")
-        if central.state != .poweredOn {
-            print("bluetooth not powered on")
-        } else {
-            print("ble start scanning")
-            // central.scanForPeripherals(withServices: [SERVICE_UUID], options: nil)
-            central.scanForPeripherals(withServices: nil, options: nil)
-            
-        }
-    }
-    
-    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        print("device found with data \(advertisementData)")
-        let device = Device(name: peripheral.name ?? "Unnamed", address: String(RSSI.intValue))
-        self.addNewDevice(device)
-
-    }
-    // MARK: - Table view data source
+    //MARK: table view protocols
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -85,28 +72,110 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         let device = devices[indexPath.row]
         cell.nameLabel.text = device.name
         cell.addressLabel.text = device.address
+        cell.rssiLabel.text = "\(device.rssi ?? 0) dB"
         
         // return it to framework for caching/drawing
         return cell
     }
-
-
-
-    //MARK: private methods
-    private func loadSampleDevices() {
+    
+    
+    //MARK: navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        super.prepare(for: segue, sender: sender)
         
-        for index in 0..<3 {
-            let device = Device(name: "Test \(index)", address: "--:--:--:--")
-            print("device: \(device)")
-            devices.append(device)
+        switch(segue.identifier ?? ""){
+        case "ShowRemote":
+            guard let remoteController = segue.destination as? RemoteViewController else {
+                fatalError("not going to UI!")
+            }
+            
+            guard let cell = sender as? DeviceTableViewCell else {
+                fatalError("unexpected sender!")
+            }
+            
+            guard let indexPath = tableView.indexPath(for: cell) else {
+                fatalError("cell not found in tableView")
+            }
+            
+            let remoteDevice = devices[indexPath.row]
+            remoteController.device = remoteDevice
+        default:
+            fatalError("not handled segue")
         }
     }
     
-    private func addNewDevice(_ : Device) {
+    //MARK: CBCentralManagerDelegates
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        print("state= \(central.state)")
+        
+        /*
+         if central.state != .poweredOn {
+         print("bluetooth not powered on")
+         } else {
+         startScan()
+         }
+         */
+        startScan()
+    }
+    
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        print("device found with data \(advertisementData)")
+        let device = Device(name: peripheral.name ?? "Unnamed",
+                            address: peripheral.identifier.uuidString,
+                            peripheral: peripheral,
+                            rssi: RSSI.intValue)
+        self.addNewDevice(device)
+        
+    }
+
+    //MARK: private methods
+    private func loadSampleDevices() {
+        for index in 0..<3 {
+            let device = Device(name: "Test \(index)", address: "--:--:--:--")
+            addNewDevice(device)
+        }
+    }
+    
+    private func addNewDevice(_ device: Device) {
         // append new device info to data and view
         let newIndexPath = IndexPath(row: devices.count, section: 0)
         devices.append(device)
         tableView.insertRows(at: [newIndexPath], with: .automatic)
+    }
+    
+    private func startScan() {
+        // self.manager.scanForPeripherals(withServices: [SERVICE_UUID], options: nil)
+        self.manager.scanForPeripherals(withServices: nil, options: nil)
+        
+        // Scan for 0.1 * 100 = 10 seconds and we stop.
+        // User cannot trigger scan again while scanning,
+        // so disable the refresh button.
+        scanProgressView.isHidden = false
+        refreshButton.isEnabled = false
+        scanProgressView.setProgress(0.0, animated: false)
+        
+        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: {(t : Timer) -> Void in
+            // We use a class static to hold a scan counter
+            struct ScanCounter {
+                static var timesCalled = 0
+                static let TOTAL_COUNT = 100
+            }
+            ScanCounter.timesCalled += 1
+            
+            // update the progress bar
+            self.scanProgressView.setProgress(Float(ScanCounter.timesCalled) / Float(ScanCounter.TOTAL_COUNT), animated: true)
+            
+            // stop scanning, stop timer and then reset counter
+            if ScanCounter.timesCalled >= ScanCounter.TOTAL_COUNT {
+                t.invalidate()
+                ScanCounter.timesCalled = 0
+                self.manager.stopScan()
+                self.scanProgressView.isHidden = true
+                self.refreshButton.isEnabled = true
+            }
+        })
     }
 
 }
