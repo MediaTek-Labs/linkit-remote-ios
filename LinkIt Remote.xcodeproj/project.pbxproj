@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		FCEF8DE51F4D16AA00587029 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF8DE41F4D16AA00587029 /* AppDelegate.swift */; };
-		FCEF8DE71F4D16AA00587029 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF8DE61F4D16AA00587029 /* ViewController.swift */; };
+		FCEF8DE71F4D16AA00587029 /* DeviceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF8DE61F4D16AA00587029 /* DeviceTableViewController.swift */; };
 		FCEF8DEA1F4D16AA00587029 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCEF8DE81F4D16AA00587029 /* Main.storyboard */; };
 		FCEF8DEC1F4D16AA00587029 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCEF8DEB1F4D16AA00587029 /* Assets.xcassets */; };
 		FCEF8DEF1F4D16AA00587029 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCEF8DED1F4D16AA00587029 /* LaunchScreen.storyboard */; };
 		FCEF8DFA1F4D16AA00587029 /* LinkIt_RemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF8DF91F4D16AA00587029 /* LinkIt_RemoteTests.swift */; };
+		FCEF8E061F4D1BDB00587029 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCEF8E051F4D1BDB00587029 /* CoreBluetooth.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		FCEF8E081F4D219100587029 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF8E071F4D219100587029 /* Device.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +30,7 @@
 /* Begin PBXFileReference section */
 		FCEF8DE11F4D16AA00587029 /* LinkIt Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LinkIt Remote.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCEF8DE41F4D16AA00587029 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FCEF8DE61F4D16AA00587029 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FCEF8DE61F4D16AA00587029 /* DeviceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTableViewController.swift; sourceTree = "<group>"; };
 		FCEF8DE91F4D16AA00587029 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FCEF8DEB1F4D16AA00587029 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FCEF8DEE1F4D16AA00587029 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -36,6 +38,8 @@
 		FCEF8DF51F4D16AA00587029 /* LinkIt RemoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "LinkIt RemoteTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCEF8DF91F4D16AA00587029 /* LinkIt_RemoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkIt_RemoteTests.swift; sourceTree = "<group>"; };
 		FCEF8DFB1F4D16AA00587029 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FCEF8E051F4D1BDB00587029 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		FCEF8E071F4D219100587029 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCEF8E061F4D1BDB00587029 /* CoreBluetooth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +67,7 @@
 				FCEF8DE31F4D16AA00587029 /* LinkIt Remote */,
 				FCEF8DF81F4D16AA00587029 /* LinkIt RemoteTests */,
 				FCEF8DE21F4D16AA00587029 /* Products */,
+				FCEF8E041F4D1BDA00587029 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,7 +84,8 @@
 			isa = PBXGroup;
 			children = (
 				FCEF8DE41F4D16AA00587029 /* AppDelegate.swift */,
-				FCEF8DE61F4D16AA00587029 /* ViewController.swift */,
+				FCEF8DE61F4D16AA00587029 /* DeviceTableViewController.swift */,
+				FCEF8E071F4D219100587029 /* Device.swift */,
 				FCEF8DE81F4D16AA00587029 /* Main.storyboard */,
 				FCEF8DEB1F4D16AA00587029 /* Assets.xcassets */,
 				FCEF8DED1F4D16AA00587029 /* LaunchScreen.storyboard */,
@@ -94,6 +101,14 @@
 				FCEF8DFB1F4D16AA00587029 /* Info.plist */,
 			);
 			path = "LinkIt RemoteTests";
+			sourceTree = "<group>";
+		};
+		FCEF8E041F4D1BDA00587029 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FCEF8E051F4D1BDB00587029 /* CoreBluetooth.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,7 +216,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FCEF8DE71F4D16AA00587029 /* ViewController.swift in Sources */,
+				FCEF8E081F4D219100587029 /* Device.swift in Sources */,
+				FCEF8DE71F4D16AA00587029 /* DeviceTableViewController.swift in Sources */,
 				FCEF8DE51F4D16AA00587029 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -346,7 +362,7 @@
 				DEVELOPMENT_TEAM = Z2W3PFW756;
 				INFOPLIST_FILE = "LinkIt Remote/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mediatek.labs.LinkIt-Remote";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mediatek.labs.linkit.remote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -359,7 +375,7 @@
 				DEVELOPMENT_TEAM = Z2W3PFW756;
 				INFOPLIST_FILE = "LinkIt Remote/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mediatek.labs.LinkIt-Remote";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mediatek.labs.linkit.remote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

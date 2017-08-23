@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  DeviceTableViewController.swift
 //  LinkIt Remote
 //
 //  Created by Pablo Sun on 2017/8/23.
@@ -8,11 +8,14 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class DeviceTableViewController: UITableViewController {
+    //MARK: properties
+    var devices : [Device] = [Device]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        print("device count = \(devices.count)")
     }
 
     override func didReceiveMemoryWarning() {
