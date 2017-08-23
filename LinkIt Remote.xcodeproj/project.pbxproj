@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FC6D57611F4D291B001C8558 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6D57601F4D291B001C8558 /* HelpViewController.swift */; };
+		FC6D57611F4D291B001C8558 /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6D57601F4D291B001C8558 /* RemoteViewController.swift */; };
 		FC6D57631F4D2D7D001C8558 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6D57621F4D2D7D001C8558 /* DeviceTableViewCell.swift */; };
 		FCEF8DE51F4D16AA00587029 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF8DE41F4D16AA00587029 /* AppDelegate.swift */; };
 		FCEF8DE71F4D16AA00587029 /* DeviceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF8DE61F4D16AA00587029 /* DeviceTableViewController.swift */; };
@@ -30,7 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		FC6D57601F4D291B001C8558 /* HelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
+		FC6D57601F4D291B001C8558 /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
 		FC6D57621F4D2D7D001C8558 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		FCEF8DE11F4D16AA00587029 /* LinkIt Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LinkIt Remote.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCEF8DE41F4D16AA00587029 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -91,7 +91,7 @@
 				FCEF8DE61F4D16AA00587029 /* DeviceTableViewController.swift */,
 				FC6D57621F4D2D7D001C8558 /* DeviceTableViewCell.swift */,
 				FCEF8E071F4D219100587029 /* Device.swift */,
-				FC6D57601F4D291B001C8558 /* HelpViewController.swift */,
+				FC6D57601F4D291B001C8558 /* RemoteViewController.swift */,
 				FCEF8DE81F4D16AA00587029 /* Main.storyboard */,
 				FCEF8DED1F4D16AA00587029 /* LaunchScreen.storyboard */,
 				FCEF8DEB1F4D16AA00587029 /* Assets.xcassets */,
@@ -226,7 +226,7 @@
 				FCEF8E081F4D219100587029 /* Device.swift in Sources */,
 				FCEF8DE71F4D16AA00587029 /* DeviceTableViewController.swift in Sources */,
 				FCEF8DE51F4D16AA00587029 /* AppDelegate.swift in Sources */,
-				FC6D57611F4D291B001C8558 /* HelpViewController.swift in Sources */,
+				FC6D57611F4D291B001C8558 /* RemoteViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
