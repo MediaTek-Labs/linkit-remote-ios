@@ -1,0 +1,429 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FCEF8DE51F4D16AA00587029 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF8DE41F4D16AA00587029 /* AppDelegate.swift */; };
+		FCEF8DE71F4D16AA00587029 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF8DE61F4D16AA00587029 /* ViewController.swift */; };
+		FCEF8DEA1F4D16AA00587029 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCEF8DE81F4D16AA00587029 /* Main.storyboard */; };
+		FCEF8DEC1F4D16AA00587029 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCEF8DEB1F4D16AA00587029 /* Assets.xcassets */; };
+		FCEF8DEF1F4D16AA00587029 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCEF8DED1F4D16AA00587029 /* LaunchScreen.storyboard */; };
+		FCEF8DFA1F4D16AA00587029 /* LinkIt_RemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF8DF91F4D16AA00587029 /* LinkIt_RemoteTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FCEF8DF61F4D16AA00587029 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FCEF8DD91F4D16AA00587029 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FCEF8DE01F4D16AA00587029;
+			remoteInfo = "LinkIt Remote";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		FCEF8DE11F4D16AA00587029 /* LinkIt Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LinkIt Remote.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FCEF8DE41F4D16AA00587029 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FCEF8DE61F4D16AA00587029 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FCEF8DE91F4D16AA00587029 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FCEF8DEB1F4D16AA00587029 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FCEF8DEE1F4D16AA00587029 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FCEF8DF01F4D16AA00587029 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FCEF8DF51F4D16AA00587029 /* LinkIt RemoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "LinkIt RemoteTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FCEF8DF91F4D16AA00587029 /* LinkIt_RemoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkIt_RemoteTests.swift; sourceTree = "<group>"; };
+		FCEF8DFB1F4D16AA00587029 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FCEF8DDE1F4D16AA00587029 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FCEF8DF21F4D16AA00587029 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FCEF8DD81F4D16AA00587029 = {
+			isa = PBXGroup;
+			children = (
+				FCEF8DE31F4D16AA00587029 /* LinkIt Remote */,
+				FCEF8DF81F4D16AA00587029 /* LinkIt RemoteTests */,
+				FCEF8DE21F4D16AA00587029 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FCEF8DE21F4D16AA00587029 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FCEF8DE11F4D16AA00587029 /* LinkIt Remote.app */,
+				FCEF8DF51F4D16AA00587029 /* LinkIt RemoteTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FCEF8DE31F4D16AA00587029 /* LinkIt Remote */ = {
+			isa = PBXGroup;
+			children = (
+				FCEF8DE41F4D16AA00587029 /* AppDelegate.swift */,
+				FCEF8DE61F4D16AA00587029 /* ViewController.swift */,
+				FCEF8DE81F4D16AA00587029 /* Main.storyboard */,
+				FCEF8DEB1F4D16AA00587029 /* Assets.xcassets */,
+				FCEF8DED1F4D16AA00587029 /* LaunchScreen.storyboard */,
+				FCEF8DF01F4D16AA00587029 /* Info.plist */,
+			);
+			path = "LinkIt Remote";
+			sourceTree = "<group>";
+		};
+		FCEF8DF81F4D16AA00587029 /* LinkIt RemoteTests */ = {
+			isa = PBXGroup;
+			children = (
+				FCEF8DF91F4D16AA00587029 /* LinkIt_RemoteTests.swift */,
+				FCEF8DFB1F4D16AA00587029 /* Info.plist */,
+			);
+			path = "LinkIt RemoteTests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FCEF8DE01F4D16AA00587029 /* LinkIt Remote */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FCEF8DFE1F4D16AA00587029 /* Build configuration list for PBXNativeTarget "LinkIt Remote" */;
+			buildPhases = (
+				FCEF8DDD1F4D16AA00587029 /* Sources */,
+				FCEF8DDE1F4D16AA00587029 /* Frameworks */,
+				FCEF8DDF1F4D16AA00587029 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "LinkIt Remote";
+			productName = "LinkIt Remote";
+			productReference = FCEF8DE11F4D16AA00587029 /* LinkIt Remote.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FCEF8DF41F4D16AA00587029 /* LinkIt RemoteTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FCEF8E011F4D16AA00587029 /* Build configuration list for PBXNativeTarget "LinkIt RemoteTests" */;
+			buildPhases = (
+				FCEF8DF11F4D16AA00587029 /* Sources */,
+				FCEF8DF21F4D16AA00587029 /* Frameworks */,
+				FCEF8DF31F4D16AA00587029 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FCEF8DF71F4D16AA00587029 /* PBXTargetDependency */,
+			);
+			name = "LinkIt RemoteTests";
+			productName = "LinkIt RemoteTests";
+			productReference = FCEF8DF51F4D16AA00587029 /* LinkIt RemoteTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FCEF8DD91F4D16AA00587029 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "MediaTek Labs";
+				TargetAttributes = {
+					FCEF8DE01F4D16AA00587029 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = Z2W3PFW756;
+						ProvisioningStyle = Automatic;
+					};
+					FCEF8DF41F4D16AA00587029 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = Z2W3PFW756;
+						ProvisioningStyle = Automatic;
+						TestTargetID = FCEF8DE01F4D16AA00587029;
+					};
+				};
+			};
+			buildConfigurationList = FCEF8DDC1F4D16AA00587029 /* Build configuration list for PBXProject "LinkIt Remote" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FCEF8DD81F4D16AA00587029;
+			productRefGroup = FCEF8DE21F4D16AA00587029 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FCEF8DE01F4D16AA00587029 /* LinkIt Remote */,
+				FCEF8DF41F4D16AA00587029 /* LinkIt RemoteTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FCEF8DDF1F4D16AA00587029 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCEF8DEF1F4D16AA00587029 /* LaunchScreen.storyboard in Resources */,
+				FCEF8DEC1F4D16AA00587029 /* Assets.xcassets in Resources */,
+				FCEF8DEA1F4D16AA00587029 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FCEF8DF31F4D16AA00587029 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FCEF8DDD1F4D16AA00587029 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCEF8DE71F4D16AA00587029 /* ViewController.swift in Sources */,
+				FCEF8DE51F4D16AA00587029 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FCEF8DF11F4D16AA00587029 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCEF8DFA1F4D16AA00587029 /* LinkIt_RemoteTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FCEF8DF71F4D16AA00587029 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FCEF8DE01F4D16AA00587029 /* LinkIt Remote */;
+			targetProxy = FCEF8DF61F4D16AA00587029 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FCEF8DE81F4D16AA00587029 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FCEF8DE91F4D16AA00587029 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FCEF8DED1F4D16AA00587029 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FCEF8DEE1F4D16AA00587029 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FCEF8DFC1F4D16AA00587029 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FCEF8DFD1F4D16AA00587029 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FCEF8DFF1F4D16AA00587029 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = Z2W3PFW756;
+				INFOPLIST_FILE = "LinkIt Remote/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mediatek.labs.LinkIt-Remote";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		FCEF8E001F4D16AA00587029 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = Z2W3PFW756;
+				INFOPLIST_FILE = "LinkIt Remote/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mediatek.labs.LinkIt-Remote";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		FCEF8E021F4D16AA00587029 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = Z2W3PFW756;
+				INFOPLIST_FILE = "LinkIt RemoteTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mediatek.labs.LinkIt-RemoteTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LinkIt Remote.app/LinkIt Remote";
+			};
+			name = Debug;
+		};
+		FCEF8E031F4D16AA00587029 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = Z2W3PFW756;
+				INFOPLIST_FILE = "LinkIt RemoteTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mediatek.labs.LinkIt-RemoteTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LinkIt Remote.app/LinkIt Remote";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FCEF8DDC1F4D16AA00587029 /* Build configuration list for PBXProject "LinkIt Remote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FCEF8DFC1F4D16AA00587029 /* Debug */,
+				FCEF8DFD1F4D16AA00587029 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FCEF8DFE1F4D16AA00587029 /* Build configuration list for PBXNativeTarget "LinkIt Remote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FCEF8DFF1F4D16AA00587029 /* Debug */,
+				FCEF8E001F4D16AA00587029 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		FCEF8E011F4D16AA00587029 /* Build configuration list for PBXNativeTarget "LinkIt RemoteTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FCEF8E021F4D16AA00587029 /* Debug */,
+				FCEF8E031F4D16AA00587029 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FCEF8DD91F4D16AA00587029 /* Project object */;
+}
