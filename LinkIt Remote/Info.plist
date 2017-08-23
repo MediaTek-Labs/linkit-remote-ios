@@ -41,5 +41,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>To scan nearby LinkIt 7697 boards</string>
 </dict>
 </plist>

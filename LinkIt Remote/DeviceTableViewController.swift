@@ -7,25 +7,36 @@
 //
 
 import UIKit
+import CoreBluetooth
 
-
-class DeviceTableViewController: UITableViewController {
+class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate {
+    
+    //MARK: defines
+    
+    let SERVICE_UUID = CBUUID(string: "19B10010-E8F2-537E-4F6C-D104768A1214")
+    
     //MARK: properties
+    
     var devices : [Device] = [Device]()
+    var manager : CBCentralManager!
     
     //MARK: actions
+    
     @IBAction func openHelpPage() {
         let url = NSURL(string:"http://labs.mediatek.com/")! as URL
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
     
-    //MARK: protocols
+    //MARK: view protocols
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         loadSampleDevices()
+        
+        // Instantialte BLE manager
+        manager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey : NSNumber(value:true)])
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,6 +44,25 @@ class DeviceTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: CentralManagerDelegates
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        print("state= \(central.state)")
+        if central.state != .poweredOn {
+            print("bluetooth not powered on")
+        } else {
+            print("ble start scanning")
+            // central.scanForPeripherals(withServices: [SERVICE_UUID], options: nil)
+            central.scanForPeripherals(withServices: nil, options: nil)
+            
+        }
+    }
+    
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        print("device found with data \(advertisementData)")
+        let device = Device(name: peripheral.name ?? "Unnamed", address: String(RSSI.intValue))
+        self.addNewDevice(device)
+
+    }
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -70,6 +100,13 @@ class DeviceTableViewController: UITableViewController {
             print("device: \(device)")
             devices.append(device)
         }
+    }
+    
+    private func addNewDevice(_ : Device) {
+        // append new device info to data and view
+        let newIndexPath = IndexPath(row: devices.count, section: 0)
+        devices.append(device)
+        tableView.insertRows(at: [newIndexPath], with: .automatic)
     }
 
 }
