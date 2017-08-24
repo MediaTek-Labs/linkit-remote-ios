@@ -43,5 +43,7 @@
 	</array>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>To scan and connect nearby LinkIt 7697 boards</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

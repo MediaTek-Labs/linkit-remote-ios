@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="SliderPanel" id="Bqp-ry-grf" customClass="SliderPanel" customModule="LinkIt_Remote" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="161" height="81"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="0Sm-l2-AhR">
+                    <rect key="frame" x="2" y="47" width="157" height="31"/>
+                    <connections>
+                        <action selector="onValueChanged:" destination="Bqp-ry-grf" eventType="valueChanged" id="Ex2-zb-Aru"/>
+                    </connections>
+                </slider>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="500" verticalHuggingPriority="251" horizontalCompressionResistancePriority="700" text="TitleLabel" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j7Y-kP-vGX">
+                    <rect key="frame" x="4" y="4" width="75" height="21"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration">
+                        <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                    </accessibility>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="400" verticalHuggingPriority="251" horizontalCompressionResistancePriority="600" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYl-Sk-4Fm">
+                    <rect key="frame" x="96" y="4" width="61" height="21"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <accessibility key="accessibilityConfiguration">
+                        <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                    </accessibility>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="j7Y-kP-vGX" firstAttribute="top" secondItem="Bqp-ry-grf" secondAttribute="top" constant="4" id="6mj-Qr-dwi"/>
+                <constraint firstItem="HYl-Sk-4Fm" firstAttribute="top" secondItem="Bqp-ry-grf" secondAttribute="top" constant="4" id="FQF-v4-fAC"/>
+                <constraint firstItem="HYl-Sk-4Fm" firstAttribute="trailing" secondItem="0Sm-l2-AhR" secondAttribute="trailing" id="JuD-FD-Z5D"/>
+                <constraint firstItem="0Sm-l2-AhR" firstAttribute="leading" secondItem="Bqp-ry-grf" secondAttribute="leading" constant="4" id="KTa-1N-nXL"/>
+                <constraint firstItem="0Sm-l2-AhR" firstAttribute="bottom" secondItem="Bqp-ry-grf" secondAttribute="bottom" constant="-4" id="ach-SV-NQ1"/>
+                <constraint firstItem="HYl-Sk-4Fm" firstAttribute="leading" secondItem="j7Y-kP-vGX" secondAttribute="trailing" constant="17" id="fev-HG-rNc"/>
+                <constraint firstItem="0Sm-l2-AhR" firstAttribute="trailing" secondItem="Bqp-ry-grf" secondAttribute="trailing" constant="-4" id="ycK-Hu-10K"/>
+                <constraint firstItem="j7Y-kP-vGX" firstAttribute="leading" secondItem="Bqp-ry-grf" secondAttribute="leading" constant="4" id="yva-rY-sW1"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="slider" destination="0Sm-l2-AhR" id="PYK-dZ-jLl"/>
+                <outlet property="titleLabel" destination="j7Y-kP-vGX" id="ahG-ec-4bB"/>
+                <outlet property="valueLabel" destination="HYl-Sk-4Fm" id="eUm-i1-5Vm"/>
+            </connections>
+            <point key="canvasLocation" x="-134.5" y="-135.5"/>
+        </view>
+    </objects>
+</document>

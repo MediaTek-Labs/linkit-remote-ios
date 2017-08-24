@@ -119,10 +119,11 @@ class RemoteViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         navBar.title = device?.name ?? "Unknown"
+        
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         // genereate controls AFTER auto-layout of the
         // remoteView finished
@@ -229,6 +230,7 @@ class RemoteViewController: UIViewController {
                     self.buttons.append(switchPanel)
                     self.remoteView.addSubview(switchPanel)
                 } else {
+                    /*
                     let sliderPanel = UIView(frame:rect)
                     sliderPanel.layer.cornerRadius = 10
                     sliderPanel.layer.borderWidth = 0
@@ -246,9 +248,12 @@ class RemoteViewController: UIViewController {
                     //frame: CGRect(x:padding, y:padding, width: rect.size.width - 2 * padding, height: rect.size.height - 2 * padding)
                     let slider = UISlider(frame: sliderFrame)
                     slider.tintColor = BrandColor.pink.secondary
-                    sliderPanel.addSubview(slider)                    
-                    self.buttons.append(sliderPanel)
-                    self.remoteView.addSubview(sliderPanel)
+                    sliderPanel.addSubview(slider)
+                    */
+                    let slider = SliderPanel.loadFromNib(withColor: BrandColor.pink)
+                    slider.frame = rect
+                    self.buttons.append(slider)
+                    self.remoteView.addSubview(slider)
                 }
             }
         }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FC58E77E1F4EC823001A9038 /* SliderPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC58E77D1F4EC823001A9038 /* SliderPanel.xib */; };
+		FC58E7801F4EC835001A9038 /* SliderPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58E77F1F4EC835001A9038 /* SliderPanel.swift */; };
 		FC6D57611F4D291B001C8558 /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6D57601F4D291B001C8558 /* RemoteViewController.swift */; };
 		FC6D57631F4D2D7D001C8558 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6D57621F4D2D7D001C8558 /* DeviceTableViewCell.swift */; };
 		FCEF8DE51F4D16AA00587029 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF8DE41F4D16AA00587029 /* AppDelegate.swift */; };
@@ -30,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FC58E77D1F4EC823001A9038 /* SliderPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SliderPanel.xib; sourceTree = "<group>"; };
+		FC58E77F1F4EC835001A9038 /* SliderPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderPanel.swift; sourceTree = "<group>"; };
 		FC6D57601F4D291B001C8558 /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
 		FC6D57621F4D2D7D001C8558 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		FCEF8DE11F4D16AA00587029 /* LinkIt Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LinkIt Remote.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,6 +98,8 @@
 				FC6D57601F4D291B001C8558 /* RemoteViewController.swift */,
 				FCEF8DE81F4D16AA00587029 /* Main.storyboard */,
 				FCEF8DED1F4D16AA00587029 /* LaunchScreen.storyboard */,
+				FC58E77F1F4EC835001A9038 /* SliderPanel.swift */,
+				FC58E77D1F4EC823001A9038 /* SliderPanel.xib */,
 				FCEF8DEB1F4D16AA00587029 /* Assets.xcassets */,
 				FCEF8DF01F4D16AA00587029 /* Info.plist */,
 			);
@@ -205,6 +211,7 @@
 				FCEF8DEF1F4D16AA00587029 /* LaunchScreen.storyboard in Resources */,
 				FCEF8DEC1F4D16AA00587029 /* Assets.xcassets in Resources */,
 				FCEF8DEA1F4D16AA00587029 /* Main.storyboard in Resources */,
+				FC58E77E1F4EC823001A9038 /* SliderPanel.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC6D57631F4D2D7D001C8558 /* DeviceTableViewCell.swift in Sources */,
+				FC58E7801F4EC835001A9038 /* SliderPanel.swift in Sources */,
 				FCEF8E081F4D219100587029 /* Device.swift in Sources */,
 				FCEF8DE71F4D16AA00587029 /* DeviceTableViewController.swift in Sources */,
 				FCEF8DE51F4D16AA00587029 /* AppDelegate.swift in Sources */,
