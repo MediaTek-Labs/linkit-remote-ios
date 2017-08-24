@@ -15,9 +15,12 @@
             <objects>
                 <tableViewController id="bPZ-1c-ufy" customClass="DeviceTableViewController" customModule="LinkIt_Remote" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" id="KgB-rm-tQW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="0.93292814493179321" green="0.5330776572227478" blue="0.096821404993534088" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="separatorColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="sectionIndexBackgroundColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                         <progressView key="tableHeaderView" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" id="ov5-yE-C2v">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="2"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -34,20 +37,20 @@
                                             <rect key="frame" x="8" y="8" width="254" height="29"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="400" fixedFrame="YES" text="80:4C:28:54" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FER-Qp-NWX">
                                             <rect key="frame" x="8" y="45" width="254" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RSSI Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzQ-mz-hdd">
                                             <rect key="frame" x="281.5" y="29" width="85.5" height="20.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -56,6 +59,7 @@
                                         <constraint firstItem="dzQ-mz-hdd" firstAttribute="trailing" secondItem="6B4-Gr-Em0" secondAttribute="trailingMargin" id="s28-gP-7y9"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="addressLabel" destination="FER-Qp-NWX" id="7Y8-6B-Uqo"/>
                                     <outlet property="nameLabel" destination="HtC-g3-0N5" id="L3y-nf-z8f"/>
@@ -103,24 +107,26 @@
                         <viewControllerLayoutGuide type="bottom" id="W30-Ql-IAd"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="0ts-mG-0Nw">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mB-b9-gyq">
-                                <rect key="frame" x="16" y="72" width="343" height="587"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="4" y="4" width="367" height="595"/>
+                                <color key="backgroundColor" red="0.20784313725490194" green="0.21176470588235294" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.20784313725490194" green="0.21176470588235294" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="0.93292814489999998" green="0.5330776572" blue="0.096821404989999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="9mB-b9-gyq" firstAttribute="trailing" secondItem="0ts-mG-0Nw" secondAttribute="trailingMargin" id="Sj6-2E-gWU"/>
-                            <constraint firstItem="W30-Ql-IAd" firstAttribute="top" secondItem="9mB-b9-gyq" secondAttribute="bottom" constant="8" symbolic="YES" id="beB-vd-p5n"/>
-                            <constraint firstItem="9mB-b9-gyq" firstAttribute="top" secondItem="I9P-qy-rSl" secondAttribute="bottom" constant="8" symbolic="YES" id="pn0-1I-IjI"/>
-                            <constraint firstItem="9mB-b9-gyq" firstAttribute="leading" secondItem="0ts-mG-0Nw" secondAttribute="leadingMargin" id="s0a-v7-40Q"/>
+                            <constraint firstItem="9mB-b9-gyq" firstAttribute="top" secondItem="I9P-qy-rSl" secondAttribute="bottom" constant="4" id="Aar-ly-McQ"/>
+                            <constraint firstItem="9mB-b9-gyq" firstAttribute="leading" secondItem="0ts-mG-0Nw" secondAttribute="leading" constant="4" id="FRg-X0-jgN"/>
+                            <constraint firstAttribute="trailing" secondItem="9mB-b9-gyq" secondAttribute="trailing" constant="4" id="Lul-a5-oB7"/>
+                            <constraint firstItem="W30-Ql-IAd" firstAttribute="top" secondItem="9mB-b9-gyq" secondAttribute="bottom" constant="4" id="U5Q-T7-8Xj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Device" id="AhM-LA-4YX"/>
                     <connections>
+                        <outlet property="canvas" destination="0ts-mG-0Nw" id="uaM-Od-ndA"/>
                         <outlet property="navBar" destination="AhM-LA-4YX" id="tbl-Be-nwE"/>
                         <outlet property="remoteView" destination="9mB-b9-gyq" id="Kg1-Bf-WJd"/>
                     </connections>
@@ -134,9 +140,15 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0uL-0S-K4o" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="fHv-nP-OUe">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="fHv-nP-OUe">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="0.93292814489999998" green="0.5330776572" blue="0.096821404989999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

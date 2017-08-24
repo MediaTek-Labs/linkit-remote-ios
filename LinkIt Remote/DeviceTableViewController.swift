@@ -43,17 +43,22 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         
         scanProgressView.isHidden = true
         loadSampleDevices()
+        setNeedsStatusBarAppearanceUpdate()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        stopScan()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     //MARK: table view protocols
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        
         return 1
     }
     
@@ -84,6 +89,8 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         super.prepare(for: segue, sender: sender)
+        
+        self.stopScan()
         
         switch(segue.identifier ?? ""){
         case "ShowRemote":
@@ -149,33 +156,29 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         // self.manager.scanForPeripherals(withServices: [SERVICE_UUID], options: nil)
         self.manager.scanForPeripherals(withServices: nil, options: nil)
         
-        // Scan for 0.1 * 100 = 10 seconds and we stop.
+        // Scan for 10 seconds and we stop.
         // User cannot trigger scan again while scanning,
         // so disable the refresh button.
-        scanProgressView.isHidden = false
-        refreshButton.isEnabled = false
-        scanProgressView.setProgress(0.0, animated: false)
+        let SCAN_DURATION = 10.0
+        self.refreshButton.isEnabled = false
+        self.scanProgressView.progress = 0.0
+        self.scanProgressView.setProgress(0.0, animated: false)
+        self.scanProgressView.isHidden = false
         
-        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: {(t : Timer) -> Void in
-            // We use a class static to hold a scan counter
-            struct ScanCounter {
-                static var timesCalled = 0
-                static let TOTAL_COUNT = 100
-            }
-            ScanCounter.timesCalled += 1
-            
-            // update the progress bar
-            self.scanProgressView.setProgress(Float(ScanCounter.timesCalled) / Float(ScanCounter.TOTAL_COUNT), animated: true)
-            
-            // stop scanning, stop timer and then reset counter
-            if ScanCounter.timesCalled >= ScanCounter.TOTAL_COUNT {
-                t.invalidate()
-                ScanCounter.timesCalled = 0
-                self.manager.stopScan()
-                self.scanProgressView.isHidden = true
-                self.refreshButton.isEnabled = true
-            }
-        })
+        // update the progress bar
+        UIView.animate(withDuration: SCAN_DURATION, delay: 0.0, options: .curveEaseOut, animations: { () -> Void in self.scanProgressView.setProgress(1.0, animated: true)})
+        
+        // set timer to stop scanning
+        Timer.scheduledTimer(withTimeInterval: SCAN_DURATION, repeats: false, block: {(t : Timer) -> Void
+            in self.stopScan()})
+    }
+    
+    private func stopScan() {
+        // stop scanning, stop timer and then reset counter
+        self.manager.stopScan()
+        self.scanProgressView.isHidden = true
+        self.scanProgressView.setProgress(0.0, animated: false)
+        self.refreshButton.isEnabled = true
     }
 
 }
