@@ -124,7 +124,9 @@
                             <constraint firstItem="W30-Ql-IAd" firstAttribute="top" secondItem="9mB-b9-gyq" secondAttribute="bottom" constant="4" id="U5Q-T7-8Xj"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Device" id="AhM-LA-4YX"/>
+                    <navigationItem key="navigationItem" title="Device" id="AhM-LA-4YX">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="QHi-0c-McR"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="canvas" destination="0ts-mG-0Nw" id="uaM-Od-ndA"/>
                         <outlet property="navBar" destination="AhM-LA-4YX" id="tbl-Be-nwE"/>
@@ -140,14 +142,16 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0uL-0S-K4o" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="fHv-nP-OUe">
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="fHv-nP-OUe">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.93292814489999998" green="0.5330776572" blue="0.096821404989999998" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="barTintColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                         <textAttributes key="titleTextAttributes">
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="textColor" red="0.93292814489999998" green="0.5330776572" blue="0.096821404989999998" alpha="1" colorSpace="calibratedRGB"/>
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>

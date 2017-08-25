@@ -53,7 +53,7 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return UIStatusBarStyle.lightContent
     }
     
     //MARK: table view protocols

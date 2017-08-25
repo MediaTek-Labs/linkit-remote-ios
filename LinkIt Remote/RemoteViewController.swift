@@ -119,7 +119,7 @@ class RemoteViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         navBar.title = device?.name ?? "Unknown"
-        
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -138,7 +138,7 @@ class RemoteViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return UIStatusBarStyle.lightContent
     }
 
     /*
@@ -158,15 +158,16 @@ class RemoteViewController: UIViewController {
     }
     
     func prepareButtons() {
-        for iy in 0...5 {
-            for ix in 0...2 {
+        let row = 4
+        let col = 4
+        let padding = 4.0
+        
+        for iy in 0..<row {
+            for ix in 0..<col {
                 let vw = Double(self.remoteView.frame.width)
                 let vh = Double(self.remoteView.frame.height)
-                let padding = 4.0
-                let row = 6.0
-                let col = 3.0
-                let cw = vw / col
-                let ch = vh / row
+                let cw = vw / Double(col)
+                let ch = vh / Double(row)
                 let bw = cw - (padding * 2)
                 let bh = ch - (padding * 2)
                 
