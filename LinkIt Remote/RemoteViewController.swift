@@ -33,13 +33,18 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     let REMOTE_CANVAS_COLUMN = CBUUID(string: "19B10012-E8F2-537E-4F6C-D104768A1214")
 
     //MARK actions
+    
     @IBAction func refreshDevice(_ sender: Any) {
         clear()
         connect()
     }
+    
+    func remoteButtonTapped(button : UIButton) {
+        print("button tapped! \(button.titleLabel?.text ?? "?")")
+    }
 
     
-    //MARK navigation
+    //MARK view delegates
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,40 +72,12 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         return UIStatusBarStyle.lightContent
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
-    //MARK: CBCentralManagerDelegates
+    //MARK: BLE delegates
+    
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         print("state= \(central.state) from RemoteViewController")
         
-    }
-    
-    //MARK: private methods
-    func remoteButtonTapped(button : UIButton) {
-        print("button tapped! \(button.titleLabel?.text ?? "?")")
-        
-    }
-    
-    private func createButtonFrom(device : Device) {
-        
-    }
-    
-    // MARK: BLE operation
-    func connect() {
-        if let peripheral = device?.peripheral {
-            spinner.startAnimating()
-            manager?.connect(peripheral, options: nil)
-        } else {
-            prepareButtons(row: 4, col: 2)
-        }
     }
     
     func centralManager(_ central: CBCentralManager,
@@ -138,14 +115,23 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
     }
     
-    func loadDeviceInfo(device: Device) {
-        
-    }
+    //MARK: Methods
     
     private func clear() {
         settings.removeAll(keepingCapacity: true)
         for s in self.remoteView.subviews {
             s.removeFromSuperview()
+        }
+    }
+    
+    // MARK: BLE operation
+    private func connect() {
+        if let peripheral = device?.peripheral {
+            spinner.startAnimating()
+            manager?.connect(peripheral, options: nil)
+        } else {
+            // use a dummy layout
+            prepareButtons(row: 4, col: 2)
         }
     }
     
@@ -162,7 +148,6 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 let ch = vh / Double(row)
                 let bw = cw - (padding * 2)
                 let bh = ch - (padding * 2)
-                
                 
                 let rect = CGRect(x: Double(ix) * cw + padding,
                                y:Double(iy) * ch + padding,
