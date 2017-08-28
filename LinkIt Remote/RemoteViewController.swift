@@ -7,129 +7,55 @@
 //
 
 import UIKit
+import CoreBluetooth
 
-extension UIColor {
-    convenience init(red: Int, green: Int, blue: Int) {
-        assert(red >= 0 && red <= 255, "Invalid red component")
-        assert(green >= 0 && green <= 255, "Invalid green component")
-        assert(blue >= 0 && blue <= 255, "Invalid blue component")
-        
-        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
-    }
-    
-    convenience init(rgb: Int) {
-        self.init(
-            red: (rgb >> 16) & 0xFF,
-            green: (rgb >> 8) & 0xFF,
-            blue: rgb & 0xFF
-        )
-    }
+func readInt(data : Data) -> Int {
+    return Int(data.withUnsafeBytes({(body : UnsafePointer<Int32>) -> Int32 in
+        return body.pointee
+    }))
 }
 
-struct ColorSet {
-    var primary : UIColor
-    var secondary : UIColor
-}
-
-class BrandColor {
-    static let gold = ColorSet(primary: UIColor(rgb: 0xF39A1E), secondary: UIColor(rgb: 0xDEC9A5))
-    static let yellow = ColorSet(primary: UIColor(rgb: 0xFED100), secondary: UIColor(rgb: 0xE1D4A0))
-    static let blue = ColorSet(primary: UIColor(rgb: 0x00A1DE), secondary: UIColor(rgb: 0xABCBDD))
-    static let green = ColorSet(primary: UIColor(rgb: 0x69BE28), secondary: UIColor(rgb: 0xB6CEA9))
-    static let pink = ColorSet(primary: UIColor(rgb: 0xD71F85), secondary: UIColor(rgb: 0xDCAEC9))
-    static let grey = ColorSet(primary: UIColor(rgb: 0x353630), secondary: UIColor(rgb: 0x353630))
-}
-
-extension UILabel {
-    convenience init(_ c: ColorSet) {
-        self.init()
-        backgroundColor = c.secondary
-        tintColor = .white
-        layer.cornerRadius = 10
-        layer.borderWidth = 0
-    }
-}
-
-class RemoteUIButton : UIButton {
-    var colorSet : ColorSet {
-        didSet {
-            if(isHighlighted) {
-                backgroundColor = colorSet.secondary
-            } else {
-                backgroundColor = colorSet.primary
-            }
-        }
-    }
-    
-    //MARK: Button initialization
-    required init?(coder: NSCoder) {
-        self.colorSet = BrandColor.blue
-        super.init(coder: coder)
-        
-    }
-    
-    init(_ c: ColorSet) {
-        self.colorSet = c
-        super.init(frame: CGRect())
-        // Setup button appearance
-        backgroundColor = c.primary
-        tintColor = .white
-        layer.cornerRadius = 10
-        layer.borderWidth = 0
-        // layer.borderColor = c.primary.cgColor
-        showsTouchWhenHighlighted = false
-        
-    }
-    
-    override var isHighlighted: Bool {
-        didSet {
-            if(isHighlighted) {
-                backgroundColor = colorSet.secondary
-            } else {
-                backgroundColor = colorSet.primary
-            }
-            print("isHighlight change to \(isHighlighted)")
-        }
-    }
-    
-    func setCircleStyle() {
-        let radius = min(frame.size.width / 2, frame.size.height / 2)
-        let center = (frame.origin.x + frame.size.width / 2, frame.origin.y + frame.size.height / 2)
-        self.layer.cornerRadius = radius
-        self.frame.origin.x = center.0 - radius
-        self.frame.origin.y = center.1 - radius
-        self.frame.size.width = radius * 2
-        self.frame.size.height = radius * 2
-        self.titleLabel?.font = self.titleLabel?.font.withSize(40.0)
-        self.titleLabel?.baselineAdjustment = .alignCenters
-    }
-}
-
-class RemoteViewController: UIViewController {
+class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
     @IBOutlet weak var navBar: UINavigationItem!
     @IBOutlet weak var remoteView: UIView!
     @IBOutlet var canvas: UIView!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     //MARK: properties
     var device : Device?
+    var manager : CBCentralManager?
     var buttons = [UIView]()
+    
+    var settings = [CBUUID : CBCharacteristic]()
+    
+    let REMOTE_SERVICE = CBUUID(string: "19B10010-E8F2-537E-4F6C-D104768A1214")
+    let REMOTE_CANVAS_ROW = CBUUID(string: "19B10011-E8F2-537E-4F6C-D104768A1214")
+    let REMOTE_CANVAS_COLUMN = CBUUID(string: "19B10012-E8F2-537E-4F6C-D104768A1214")
 
+    //MARK actions
+    @IBAction func refreshDevice(_ sender: Any) {
+        clear()
+        connect()
+    }
+
+    
+    //MARK navigation
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         navBar.title = device?.name ?? "Unknown"
-        setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("remote view will appear2!")
+        manager?.delegate = self
+        connect()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // genereate controls AFTER auto-layout of the
-        // remoteView finished
-        prepareButtons()
-        // canvas.backgroundColor = BrandColor.grey.secondary
-        setNeedsStatusBarAppearanceUpdate()
     }
 
     override func didReceiveMemoryWarning() {
@@ -151,15 +77,81 @@ class RemoteViewController: UIViewController {
     }
     */
     
+    //MARK: CBCentralManagerDelegates
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        print("state= \(central.state) from RemoteViewController")
+        
+    }
+    
     //MARK: private methods
     func remoteButtonTapped(button : UIButton) {
         print("button tapped! \(button.titleLabel?.text ?? "?")")
         
     }
     
-    func prepareButtons() {
-        let row = 4
-        let col = 4
+    private func createButtonFrom(device : Device) {
+        
+    }
+    
+    // MARK: BLE operation
+    func connect() {
+        if let peripheral = device?.peripheral {
+            spinner.startAnimating()
+            manager?.connect(peripheral, options: nil)
+        } else {
+            prepareButtons(row: 4, col: 2)
+        }
+    }
+    
+    func centralManager(_ central: CBCentralManager,
+                        didConnect peripheral: CBPeripheral) {
+        if peripheral == device?.peripheral {
+            //TODO: filter to our "remote control service"
+            peripheral.delegate = self
+            peripheral.discoverServices([REMOTE_SERVICE])
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        if let service = peripheral.services?.first(where: { $0.uuid == REMOTE_SERVICE}) {
+            print("service found \(service), check characteristic")
+            peripheral.discoverCharacteristics([REMOTE_CANVAS_ROW, REMOTE_CANVAS_COLUMN], for: service)
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        for c in service.characteristics ?? [] {
+            self.settings[c.uuid] = c
+            peripheral.readValue(for: c)
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        // check if there are still nil value(not read yet)
+        if self.settings.filter({$1.value == nil}).isEmpty {
+            print("everything is read!")
+            prepareButtons(row: readInt(data: settings[REMOTE_CANVAS_ROW]!.value!),
+                           col: readInt(data: settings[REMOTE_CANVAS_COLUMN]!.value!))
+        } else {
+            print("still reading characteristic...")
+        }
+        
+    }
+    
+    func loadDeviceInfo(device: Device) {
+        
+    }
+    
+    private func clear() {
+        settings.removeAll(keepingCapacity: true)
+        for s in self.remoteView.subviews {
+            s.removeFromSuperview()
+        }
+    }
+    
+    func prepareButtons(row: Int, col: Int) {
+        spinner.stopAnimating()
+        
         let padding = 4.0
         
         for iy in 0..<row {
@@ -231,26 +223,6 @@ class RemoteViewController: UIViewController {
                     self.buttons.append(switchPanel)
                     self.remoteView.addSubview(switchPanel)
                 } else {
-                    /*
-                    let sliderPanel = UIView(frame:rect)
-                    sliderPanel.layer.cornerRadius = 10
-                    sliderPanel.layer.borderWidth = 0
-                    
-                    var labelFrame = rect
-                    labelFrame.origin = .zero
-                    
-                    
-                    var sliderFrame = rect
-                    sliderFrame.origin.x = 0
-                    sliderFrame.origin.y = rect.size.height / 2
-                    sliderFrame.size.height = rect.size.height / 2
-                    sliderFrame = sliderFrame.insetBy(dx: 8.0, dy: 0)
-                    sliderPanel.backgroundColor = BrandColor.pink.primary
-                    //frame: CGRect(x:padding, y:padding, width: rect.size.width - 2 * padding, height: rect.size.height - 2 * padding)
-                    let slider = UISlider(frame: sliderFrame)
-                    slider.tintColor = BrandColor.pink.secondary
-                    sliderPanel.addSubview(slider)
-                    */
                     let slider = SliderPanel.loadFromNib(withColor: BrandColor.pink)
                     slider.frame = rect
                     self.buttons.append(slider)

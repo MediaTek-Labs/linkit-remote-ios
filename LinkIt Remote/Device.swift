@@ -17,46 +17,21 @@ enum ControlType : Int8 {
     case slider
 }
 
-class ControlInfo {
-    var type : ControlType
-    var frame : CGRect
-    
-    init(type: ControlType, rect: CGRect) {
-        self.type = type
-        self.frame = rect
-    }
-    
-    func createUIControl() -> UIView? {
-        // factory function that generates iOS controls
-        switch self.type {
-        case .label:
-            return UILabel(frame: frame)
-        case .pushButton:
-            let b = UIButton(type: .system)
-            b.frame = frame
-            return b
-        case .circleButton:
-            return UIButton(type: .system)
-        case .switchButton:
-            return UISwitch(frame: frame)
-        case .slider:
-            return UISlider(frame: frame)
-        default:
-            return nil
-        }
-    }
+struct ControlInfo {
+    var type : ControlType  // control type, such as button or label
+    var cell : CGRect       // coordinate in Remote Grid, not actual screen space.
 }
 
 class Device {
     //MARK: properties
-    
     var name : String
     var address : String
     var peripheral : CBPeripheral?
     var rssi : Int?
-    var controls = [ControlInfo]()
     
-    //MARK: remote layout info
+    // MARK: layout and UI control info
+    var grid = CGSize(width: 3, height: 4)
+    var controls = [ControlInfo]()
 
     //MARK: initialization
     
@@ -67,18 +42,12 @@ class Device {
     }
     
     //MARK: methods
-    func loadSampleControls() {
-        for i in 0...2 {
-            controls.append(
-                ControlInfo(type: .slider, rect: CGRect(x: 0,
-                                                        y: 40 * i,
-                                                        width: 33,
-                                                        height: 33)))
-        }
-    }
     
-    func getButtonCount() -> Int {
-        return controls.count
+    
+    //MARK: test
+    private func generateControlInfo() {
+        let c = ControlInfo(type: .label, cell: CGRect(x:0, y:0, width:2, height:1))
+        controls.append(c)
     }
 }
 

@@ -45,6 +45,11 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         loadSampleDevices()
         setNeedsStatusBarAppearanceUpdate()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("table view will appear!")
+        manager?.delegate = self
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -89,6 +94,7 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         super.prepare(for: segue, sender: sender)
+        print("seque triggered ! \(segue, sender)")
         
         self.stopScan()
         
@@ -108,6 +114,8 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
             
             let remoteDevice = devices[indexPath.row]
             remoteController.device = remoteDevice
+            remoteController.manager = manager
+            // remoteController shall re-assign the delegate after it appears
         default:
             fatalError("not handled segue")
         }
@@ -115,15 +123,13 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
     
     //MARK: CBCentralManagerDelegates
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        print("state= \(central.state)")
+        print("state= \(central.state) from TableViewController")
+        if central.state != .poweredOn {
+            print("bluetooth not powered on")
+        } else {
+            startScan()
+        }
         
-        /*
-         if central.state != .poweredOn {
-         print("bluetooth not powered on")
-         } else {
-         startScan()
-         }
-         */
         startScan()
     }
     
@@ -134,7 +140,6 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
                             peripheral: peripheral,
                             rssi: RSSI.intValue)
         self.addNewDevice(device)
-        
     }
 
     //MARK: private methods
@@ -175,7 +180,7 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
     
     private func stopScan() {
         // stop scanning, stop timer and then reset counter
-        self.manager.stopScan()
+        self.manager?.stopScan()
         self.scanProgressView.isHidden = true
         self.scanProgressView.setProgress(0.0, animated: false)
         self.refreshButton.isEnabled = true

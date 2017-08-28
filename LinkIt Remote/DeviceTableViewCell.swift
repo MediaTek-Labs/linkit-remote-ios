@@ -18,14 +18,19 @@ class DeviceTableViewCell: UITableViewCell {
     
     //MARK: cell methods
     override func awakeFromNib() {
-                super.awakeFromNib()
+        super.awakeFromNib()
         // Initialization code
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        if animated {
+            UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseOut, animations: { () -> Void in self.backgroundColor = highlighted ? UIColor(rgb:0xEE8819) : UIColor(rgb:0x282924)
+            })
+        } else {
+            self.backgroundColor = highlighted ? UIColor(rgb:0xEE8819) : UIColor(rgb:0x282924)
+        }
+        
+        
     }
 
 }

@@ -26,7 +26,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </progressView>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="DeviceTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="DeviceTableViewCell" id="tDr-wd-9HN" customClass="DeviceTableViewCell" customModule="LinkIt_Remote">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="DeviceTableViewCell" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="DeviceTableViewCell" id="tDr-wd-9HN" customClass="DeviceTableViewCell" customModule="LinkIt_Remote">
                                 <rect key="frame" x="0.0" y="30" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tDr-wd-9HN" id="6B4-Gr-Em0">
@@ -59,7 +59,7 @@
                                         <constraint firstItem="dzQ-mz-hdd" firstAttribute="trailing" secondItem="6B4-Gr-Em0" secondAttribute="trailingMargin" id="s28-gP-7y9"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.15688700973987579" green="0.16055603325366974" blue="0.14142881333827972" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="addressLabel" destination="FER-Qp-NWX" id="7Y8-6B-Uqo"/>
                                     <outlet property="nameLabel" destination="HtC-g3-0N5" id="L3y-nf-z8f"/>
@@ -114,28 +114,38 @@
                                 <rect key="frame" x="4" y="4" width="367" height="595"/>
                                 <color key="backgroundColor" red="0.20784313725490194" green="0.21176470588235294" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
+                            <activityIndicatorView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="HKB-jl-PXP">
+                                <rect key="frame" x="169.5" y="283.5" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.20784313725490194" green="0.21176470588235294" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.93292814489999998" green="0.5330776572" blue="0.096821404989999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="HKB-jl-PXP" firstAttribute="centerX" secondItem="0ts-mG-0Nw" secondAttribute="centerX" id="8t2-VM-uqr"/>
                             <constraint firstItem="9mB-b9-gyq" firstAttribute="top" secondItem="I9P-qy-rSl" secondAttribute="bottom" constant="4" id="Aar-ly-McQ"/>
                             <constraint firstItem="9mB-b9-gyq" firstAttribute="leading" secondItem="0ts-mG-0Nw" secondAttribute="leading" constant="4" id="FRg-X0-jgN"/>
                             <constraint firstAttribute="trailing" secondItem="9mB-b9-gyq" secondAttribute="trailing" constant="4" id="Lul-a5-oB7"/>
+                            <constraint firstItem="HKB-jl-PXP" firstAttribute="centerY" secondItem="0ts-mG-0Nw" secondAttribute="centerY" id="TXn-nr-UsI"/>
                             <constraint firstItem="W30-Ql-IAd" firstAttribute="top" secondItem="9mB-b9-gyq" secondAttribute="bottom" constant="4" id="U5Q-T7-8Xj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Device" id="AhM-LA-4YX">
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="QHi-0c-McR"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="QHi-0c-McR">
+                            <connections>
+                                <action selector="refreshDevice:" destination="0tg-PM-CFJ" id="vgQ-wI-7aN"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="canvas" destination="0ts-mG-0Nw" id="uaM-Od-ndA"/>
                         <outlet property="navBar" destination="AhM-LA-4YX" id="tbl-Be-nwE"/>
                         <outlet property="remoteView" destination="9mB-b9-gyq" id="Kg1-Bf-WJd"/>
+                        <outlet property="spinner" destination="HKB-jl-PXP" id="NQK-eW-p7l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="goT-z0-3Pt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1520.8" y="-4.0479760119940034"/>
+            <point key="canvasLocation" x="1606" y="-4"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="FuX-Pp-Ybz">
@@ -144,7 +154,7 @@
                     <toolbarItems/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <nil key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="fHv-nP-OUe">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="fHv-nP-OUe">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>

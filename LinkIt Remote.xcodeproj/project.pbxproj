@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		FC58E77E1F4EC823001A9038 /* SliderPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC58E77D1F4EC823001A9038 /* SliderPanel.xib */; };
 		FC58E7801F4EC835001A9038 /* SliderPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58E77F1F4EC835001A9038 /* SliderPanel.swift */; };
+		FC58E7821F4FD26D001A9038 /* ColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58E7811F4FD26D001A9038 /* ColorSet.swift */; };
+		FC58E7841F4FD30D001A9038 /* RemoteUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58E7831F4FD30D001A9038 /* RemoteUIButton.swift */; };
+		FC58E7861F4FD33E001A9038 /* RemoteUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58E7851F4FD33E001A9038 /* RemoteUILabel.swift */; };
 		FC6D57611F4D291B001C8558 /* RemoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6D57601F4D291B001C8558 /* RemoteViewController.swift */; };
 		FC6D57631F4D2D7D001C8558 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6D57621F4D2D7D001C8558 /* DeviceTableViewCell.swift */; };
 		FCEF8DE51F4D16AA00587029 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEF8DE41F4D16AA00587029 /* AppDelegate.swift */; };
@@ -34,6 +37,9 @@
 /* Begin PBXFileReference section */
 		FC58E77D1F4EC823001A9038 /* SliderPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SliderPanel.xib; sourceTree = "<group>"; };
 		FC58E77F1F4EC835001A9038 /* SliderPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderPanel.swift; sourceTree = "<group>"; };
+		FC58E7811F4FD26D001A9038 /* ColorSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSet.swift; sourceTree = "<group>"; };
+		FC58E7831F4FD30D001A9038 /* RemoteUIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteUIButton.swift; sourceTree = "<group>"; };
+		FC58E7851F4FD33E001A9038 /* RemoteUILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteUILabel.swift; sourceTree = "<group>"; };
 		FC6D57601F4D291B001C8558 /* RemoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteViewController.swift; sourceTree = "<group>"; };
 		FC6D57621F4D2D7D001C8558 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		FCEF8DE11F4D16AA00587029 /* LinkIt Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LinkIt Remote.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,14 +98,17 @@
 			isa = PBXGroup;
 			children = (
 				FCEF8DE41F4D16AA00587029 /* AppDelegate.swift */,
+				FC58E7811F4FD26D001A9038 /* ColorSet.swift */,
 				FCEF8DE61F4D16AA00587029 /* DeviceTableViewController.swift */,
 				FC6D57621F4D2D7D001C8558 /* DeviceTableViewCell.swift */,
 				FCEF8E071F4D219100587029 /* Device.swift */,
 				FC6D57601F4D291B001C8558 /* RemoteViewController.swift */,
-				FCEF8DE81F4D16AA00587029 /* Main.storyboard */,
-				FCEF8DED1F4D16AA00587029 /* LaunchScreen.storyboard */,
+				FC58E7831F4FD30D001A9038 /* RemoteUIButton.swift */,
+				FC58E7851F4FD33E001A9038 /* RemoteUILabel.swift */,
 				FC58E77F1F4EC835001A9038 /* SliderPanel.swift */,
 				FC58E77D1F4EC823001A9038 /* SliderPanel.xib */,
+				FCEF8DE81F4D16AA00587029 /* Main.storyboard */,
+				FCEF8DED1F4D16AA00587029 /* LaunchScreen.storyboard */,
 				FCEF8DEB1F4D16AA00587029 /* Assets.xcassets */,
 				FCEF8DF01F4D16AA00587029 /* Info.plist */,
 			);
@@ -229,10 +238,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC58E7861F4FD33E001A9038 /* RemoteUILabel.swift in Sources */,
 				FC6D57631F4D2D7D001C8558 /* DeviceTableViewCell.swift in Sources */,
+				FC58E7821F4FD26D001A9038 /* ColorSet.swift in Sources */,
 				FC58E7801F4EC835001A9038 /* SliderPanel.swift in Sources */,
 				FCEF8E081F4D219100587029 /* Device.swift in Sources */,
 				FCEF8DE71F4D16AA00587029 /* DeviceTableViewController.swift in Sources */,
+				FC58E7841F4FD30D001A9038 /* RemoteUIButton.swift in Sources */,
 				FCEF8DE51F4D16AA00587029 /* AppDelegate.swift in Sources */,
 				FC6D57611F4D291B001C8558 /* RemoteViewController.swift in Sources */,
 			);
