@@ -40,3 +40,4 @@ class BrandColor {
     static let pink = ColorSet(primary: UIColor(rgb: 0xD71F85), secondary: UIColor(rgb: 0xDCAEC9))
     static let grey = ColorSet(primary: UIColor(rgb: 0x353630), secondary: UIColor(rgb: 0x353630))
 }
+

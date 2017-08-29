@@ -24,28 +24,23 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     //MARK: properties
     var device : Device?
     var manager : CBCentralManager?
-    var buttons = [UIView]()
-    
     var settings = [CBUUID : CBCharacteristic]()
     
-    let REMOTE_SERVICE = CBUUID(string: "19B10010-E8F2-537E-4F6C-D104768A1214")
-    let REMOTE_CANVAS_ROW = CBUUID(string: "19B10011-E8F2-537E-4F6C-D104768A1214")
-    let REMOTE_CANVAS_COLUMN = CBUUID(string: "19B10012-E8F2-537E-4F6C-D104768A1214")
 
-    //MARK actions
-    
+    //MARK: actions
     @IBAction func refreshDevice(_ sender: Any) {
-        clear()
         connect()
     }
     
     func remoteButtonTapped(button : UIButton) {
         print("button tapped! \(button.titleLabel?.text ?? "?")")
     }
-
+    
+    @IBAction func done(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
     //MARK view delegates
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -83,20 +78,28 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     func centralManager(_ central: CBCentralManager,
                         didConnect peripheral: CBPeripheral) {
         if peripheral == device?.peripheral {
-            //TODO: filter to our "remote control service"
             peripheral.delegate = self
-            peripheral.discoverServices([REMOTE_SERVICE])
+            peripheral.discoverServices([RCUUID.SERVICE])
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        if let service = peripheral.services?.first(where: { $0.uuid == REMOTE_SERVICE}) {
-            print("service found \(service), check characteristic")
-            peripheral.discoverCharacteristics([REMOTE_CANVAS_ROW, REMOTE_CANVAS_COLUMN], for: service)
+        if let service = peripheral.services?.first(where: { $0.uuid == RCUUID.SERVICE}) {
+            print("service found \(service), check characteristics")
+            let toDiscover = [RCUUID.CANVAS_ROW,
+                              RCUUID.CANVAS_COLUMN,
+                              RCUUID.CONTROL_COUNT,
+                              RCUUID.CONTROL_TYPE_ARRAY,
+                              RCUUID.CONTROL_COLOR_ARRAY,
+                              RCUUID.CONTROL_RECT_ARRAY,
+                              RCUUID.CONTROL_NAME_LIST]
+            
+            peripheral.discoverCharacteristics(toDiscover, for: service)
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        print("did discovered")
         for c in service.characteristics ?? [] {
             self.settings[c.uuid] = c
             peripheral.readValue(for: c)
@@ -106,9 +109,12 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         // check if there are still nil value(not read yet)
         if self.settings.filter({$1.value == nil}).isEmpty {
-            print("everything is read!")
-            prepareButtons(row: readInt(data: settings[REMOTE_CANVAS_ROW]!.value!),
-                           col: readInt(data: settings[REMOTE_CANVAS_COLUMN]!.value!))
+            print("all field ready")
+            if self.remoteView.subviews.isEmpty {
+                print("view empty, start creating controls")
+                collectDeviceInfo()
+            }
+            
         } else {
             print("still reading characteristic...")
         }
@@ -124,15 +130,105 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         }
     }
     
-    // MARK: BLE operation
+    // MARK: method
     private func connect() {
+        clear()
         if let peripheral = device?.peripheral {
             spinner.startAnimating()
             manager?.connect(peripheral, options: nil)
-        } else {
-            // use a dummy layout
-            prepareButtons(row: 4, col: 2)
         }
+    }
+    
+    private func collectDeviceInfo() {
+        if let d = self.device {
+            d.row = readInt(data: settings[RCUUID.CANVAS_ROW]!.value!)
+            d.col = readInt(data: settings[RCUUID.CANVAS_COLUMN]!.value!)
+            let controlCount = readInt(data: settings[RCUUID.CONTROL_COUNT]!.value!)
+            let typeArray = settings[RCUUID.CONTROL_TYPE_ARRAY]!.value!
+            let colorArray = settings[RCUUID.CONTROL_COLOR_ARRAY]!.value!
+            let rectArray = settings[RCUUID.CONTROL_RECT_ARRAY]!.value!
+            let nameData = settings[RCUUID.CONTROL_NAME_LIST]!.value!
+            let nameString = String(data: nameData, encoding: String.Encoding.utf8) ?? "Unknown"
+            let names = nameString.components(separatedBy: "\n")
+            
+            print("names = \(names)")
+            
+            // collect device control info
+            for i in 0..<controlCount {
+                let type = typeArray[i]
+                let color = colorArray[i]
+                let x = Int(rectArray[i * 4 + 0])
+                let y = Int(rectArray[i * 4 + 1])
+                let r = Int(rectArray[i * 4 + 2])
+                let c = Int(rectArray[i * 4 + 3])
+                let ci = ControlInfo(type: ControlType(rawValue: type) ?? ControlType.label,
+                                     color: ColorType(rawValue: color) ?? ColorType.gold,
+                                     cell: CGRect(x: x, y: y, width: r, height: c),
+                                     text: names[i])
+                d.controls.append(ci)
+                print("\(ci)")
+            }
+            
+            print("creating controls...")
+            createControls()
+        }
+    }
+    
+    private func createControlBy(info: ControlInfo, frame: CGRect) -> UIView {
+        switch(info.type) {
+        case .label:
+            let label = UILabel(getColorSet(info.color))
+            label.frame = frame
+            return label
+        case .pushButton:
+            let button = RemoteUIButton(getColorSet(info.color))
+            button.frame = frame
+            button.setTitle(info.text, for: .normal)
+            button.titleLabel?.adjustsFontSizeToFitWidth = true
+            // Setup the button action
+            button.addTarget(self,
+                             action: #selector(RemoteViewController.remoteButtonTapped(button:)),
+                             for: .touchUpInside)
+            return button
+        case .slider:
+            let slider = SliderPanel.loadFromNib(withColor: getColorSet(info.color))
+            slider.titleLabel.text = info.text
+            slider.frame = frame
+            return slider
+        default:
+            let view = UIView(frame: frame)
+            let c = getColorSet(info.color)
+            view.backgroundColor = c.primary
+            view.tintColor = c.secondary
+            view.layer.cornerRadius = 10
+            view.layer.borderWidth = 0
+            return view
+        }
+    }
+    
+    private func createControls() {
+        if let d = self.device {
+            let padding = CGFloat(4.0)
+            let vw = CGFloat(self.remoteView.frame.width)
+            let vh = CGFloat(self.remoteView.frame.height)
+            let cw = vw / CGFloat(d.col)
+            let ch = vh / CGFloat(d.row)
+            
+            for ci in d.controls {
+                
+                // calculate control frame
+                var rect = ci.cell
+                rect = rect.applying(CGAffineTransform(scaleX: cw, y: ch))
+                rect = rect.insetBy(dx: padding, dy: padding)
+                
+                // create control
+                let view = createControlBy(info: ci, frame: rect)
+                self.remoteView.addSubview(view)
+            }
+            
+        }
+        
+        spinner.stopAnimating()
     }
     
     func prepareButtons(row: Int, col: Int) {
@@ -171,7 +267,6 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                         button.setTitle("Hello", for: .normal)
                     }
                     
-                    self.buttons.append(button)
                     self.remoteView.addSubview(button)
                 } else if iy % 2 == 0 {
                     let switchPanel = UIView(frame:rect)
@@ -205,12 +300,12 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                     
                     switchPanel.addSubview(switchBtn)
                     switchPanel.addSubview(switchLabel)
-                    self.buttons.append(switchPanel)
+                    
                     self.remoteView.addSubview(switchPanel)
                 } else {
                     let slider = SliderPanel.loadFromNib(withColor: BrandColor.pink)
                     slider.frame = rect
-                    self.buttons.append(slider)
+
                     self.remoteView.addSubview(slider)
                 }
             }

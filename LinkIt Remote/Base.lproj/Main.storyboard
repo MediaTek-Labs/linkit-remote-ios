@@ -64,7 +64,7 @@
                                     <outlet property="addressLabel" destination="FER-Qp-NWX" id="7Y8-6B-Uqo"/>
                                     <outlet property="nameLabel" destination="HtC-g3-0N5" id="L3y-nf-z8f"/>
                                     <outlet property="rssiLabel" destination="dzQ-mz-hdd" id="qGS-aY-Dtb"/>
-                                    <segue destination="0tg-PM-CFJ" kind="show" identifier="ShowRemote" id="FgM-3M-Sza"/>
+                                    <segue destination="4RV-YV-Uzv" kind="presentation" identifier="ShowRemote" modalTransitionStyle="flipHorizontal" id="FgM-3M-Sza"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -115,7 +115,7 @@
                                 <color key="backgroundColor" red="0.20784313725490194" green="0.21176470588235294" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <activityIndicatorView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="HKB-jl-PXP">
-                                <rect key="frame" x="169.5" y="283.5" width="37" height="37"/>
+                                <rect key="frame" x="169.5" y="283" width="37" height="37"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.20784313725490194" green="0.21176470588235294" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
@@ -130,6 +130,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Device" id="AhM-LA-4YX">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="zIa-b2-qbw">
+                            <connections>
+                                <action selector="done:" destination="0tg-PM-CFJ" id="2tg-rh-F2j"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="QHi-0c-McR">
                             <connections>
                                 <action selector="refreshDevice:" destination="0tg-PM-CFJ" id="vgQ-wI-7aN"/>
@@ -145,7 +150,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="goT-z0-3Pt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1606" y="-4"/>
+            <point key="canvasLocation" x="2544.8000000000002" y="-4.0479760119940034"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="FuX-Pp-Ybz">
@@ -172,6 +177,30 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DXW-dl-eef" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-450.39999999999998" y="-4.0479760119940034"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="mrK-IH-avX">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="4RV-YV-Uzv" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="sWL-xv-e2t">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="0.93292814489999998" green="0.5330776572" blue="0.096821404989999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="0.93292814489999998" green="0.5330776572" blue="0.096821404989999998" alpha="1" colorSpace="calibratedRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="0tg-PM-CFJ" kind="relationship" relationship="rootViewController" id="v8U-oC-GSO"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="URe-EM-KvH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1546" y="423"/>
         </scene>
     </scenes>
 </document>

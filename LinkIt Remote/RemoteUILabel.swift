@@ -11,8 +11,8 @@ import UIKit
 extension UILabel {
     convenience init(_ c: ColorSet) {
         self.init()
-        backgroundColor = c.secondary
-        tintColor = .white
+        backgroundColor = c.primary
+        tintColor = c.secondary
         layer.cornerRadius = 10
         layer.borderWidth = 0
     }

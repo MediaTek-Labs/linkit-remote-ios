@@ -42,7 +42,6 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         manager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey : NSNumber(value:true)])
         
         scanProgressView.isHidden = true
-        loadSampleDevices()
         setNeedsStatusBarAppearanceUpdate()
     }
     
@@ -100,8 +99,12 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         
         switch(segue.identifier ?? ""){
         case "ShowRemote":
-            guard let remoteController = segue.destination as? RemoteViewController else {
+            guard let navController = segue.destination as? UINavigationController else {
                 fatalError("not going to UI!")
+            }
+            
+            guard let remoteController = navController.visibleViewController as? RemoteViewController else {
+                fatalError("not going to remote view UI!")
             }
             
             guard let cell = sender as? DeviceTableViewCell else {
@@ -158,8 +161,7 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
     }
     
     private func startScan() {
-        // self.manager.scanForPeripherals(withServices: [SERVICE_UUID], options: nil)
-        self.manager.scanForPeripherals(withServices: nil, options: nil)
+        self.manager.scanForPeripherals(withServices: [RCUUID.SERVICE], options: nil)
         
         // Scan for 10 seconds and we stop.
         // User cannot trigger scan again while scanning,
