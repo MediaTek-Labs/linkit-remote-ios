@@ -32,8 +32,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         connect()
     }
     
-    func remoteButtonTapped(button : UIButton) {
-        print("button tapped! \(button.titleLabel?.text ?? "?")")
+    func remoteButtonTapped(button : UIButton, forEvent event: UIEvent) {
+        print("button \(button.titleLabel?.text ?? "?") event \(event)")
     }
     
     @IBAction func done(_ sender: Any) {
@@ -148,8 +148,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             let colorArray = settings[RCUUID.CONTROL_COLOR_ARRAY]!.value!
             let rectArray = settings[RCUUID.CONTROL_RECT_ARRAY]!.value!
             let nameData = settings[RCUUID.CONTROL_NAME_LIST]!.value!
-            let nameString = String(data: nameData, encoding: String.Encoding.utf8) ?? "Unknown"
-            let names = nameString.components(separatedBy: "\n")
+            let nameString = String(data: nameData, encoding: String.Encoding.utf8)
+            let names = nameString?.components(separatedBy: "\n") ?? []
             
             print("names = \(names)")
             
@@ -179,6 +179,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         case .label:
             let label = UILabel(getColorSet(info.color))
             label.frame = frame
+            label.text = info.text
+            label.layer.cornerRadius = 10
             return label
         case .pushButton:
             let button = RemoteUIButton(getColorSet(info.color))
@@ -187,7 +189,18 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             button.titleLabel?.adjustsFontSizeToFitWidth = true
             // Setup the button action
             button.addTarget(self,
-                             action: #selector(RemoteViewController.remoteButtonTapped(button:)),
+                             action: #selector(RemoteViewController.remoteButtonTapped(button:forEvent:)),
+                             for: .touchUpInside)
+            return button
+        case .circleButton:
+            let button = RemoteUIButton(getColorSet(info.color))
+            button.setCircleStyle()
+            button.frame = frame
+            button.setTitle(info.text, for: .normal)
+            button.titleLabel?.adjustsFontSizeToFitWidth = true
+            // Setup the button action
+            button.addTarget(self,
+                             action: #selector(RemoteViewController.remoteButtonTapped(button:forEvent:)),
                              for: .touchUpInside)
             return button
         case .slider:
@@ -195,14 +208,38 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             slider.titleLabel.text = info.text
             slider.frame = frame
             return slider
-        default:
-            let view = UIView(frame: frame)
-            let c = getColorSet(info.color)
-            view.backgroundColor = c.primary
-            view.tintColor = c.secondary
-            view.layer.cornerRadius = 10
-            view.layer.borderWidth = 0
-            return view
+        case .switchButton:
+            let switchPanel = UIView(frame:frame)
+            let padding = CGFloat(4.0)
+            var btnFrame = frame
+            btnFrame.origin = .zero
+            btnFrame = btnFrame.insetBy(dx: padding, dy: padding)
+            
+            var labelFrame = btnFrame
+            labelFrame.size.height /= CGFloat(3.0)
+            labelFrame.origin.y = 0
+            
+            let switchLabel = UILabel(frame: labelFrame)
+            switchLabel.text = "Hello"
+            switchLabel.baselineAdjustment = .alignBaselines
+            switchLabel.textAlignment = .center
+            switchLabel.textColor = .white
+            
+            let switchBtn = UISwitch(frame: btnFrame)
+            let colorSet = getColorSet(info.color)
+            switchBtn.tintColor = colorSet.primary
+            switchBtn.onTintColor = colorSet.primary
+            let sx = (btnFrame.size.width - padding * 2) / switchBtn.bounds.size.width
+            let sy = (btnFrame.size.height - padding * 2) / switchBtn.bounds.size.height
+            let scale = min(sx, sy)
+            switchBtn.transform = CGAffineTransform(scaleX: scale, y:scale)
+            switchBtn.center.x = btnFrame.origin.x + btnFrame.size.width / 2
+            switchBtn.center.y = btnFrame.origin.y + btnFrame.size.height / 2 +
+                (switchLabel.frame.size.height - padding) / scale
+            switchPanel.addSubview(switchBtn)
+            switchPanel.addSubview(switchLabel)
+            
+            return switchPanel
         }
     }
     
@@ -214,103 +251,30 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             let cw = vw / CGFloat(d.col)
             let ch = vh / CGFloat(d.row)
             
-            for ci in d.controls {
+            var controlIndex = 0
+            
+            for info in d.controls {
                 
                 // calculate control frame
-                var rect = ci.cell
+                var rect = info.cell
                 rect = rect.applying(CGAffineTransform(scaleX: cw, y: ch))
                 rect = rect.insetBy(dx: padding, dy: padding)
                 
                 // create control
-                let view = createControlBy(info: ci, frame: rect)
+                let view = createControlBy(info: info, frame: rect)
+                
+                // add control tag so we can know
+                // its index in the CONTROL_EVENT_ARRAY BLE characteristic
+                view.tag = controlIndex
+                controlIndex += 1
+                
+                // insert to view
                 self.remoteView.addSubview(view)
             }
             
         }
         
         spinner.stopAnimating()
-    }
-    
-    func prepareButtons(row: Int, col: Int) {
-        spinner.stopAnimating()
-        
-        let padding = 4.0
-        
-        for iy in 0..<row {
-            for ix in 0..<col {
-                let vw = Double(self.remoteView.frame.width)
-                let vh = Double(self.remoteView.frame.height)
-                let cw = vw / Double(col)
-                let ch = vh / Double(row)
-                let bw = cw - (padding * 2)
-                let bh = ch - (padding * 2)
-                
-                let rect = CGRect(x: Double(ix) * cw + padding,
-                               y:Double(iy) * ch + padding,
-                               width: bw,
-                               height: bh)
-                
-                if ix % 2 == 0 {
-                    let button = RemoteUIButton(BrandColor.blue)
-                    button.frame = rect
-                    // Setup the button action
-                    button.addTarget(self,
-                                     action: #selector(RemoteViewController.remoteButtonTapped(button:)),
-                                     for: .touchUpInside)
-                    
-                    //button.layer.frame = rect
-                    button.setTitle("Jingle", for: .normal)//"Btn \(ix, iy)", for: .normal)
-                    button.titleLabel?.adjustsFontSizeToFitWidth = true
-                    if ix == 0 {
-                        button.setCircleStyle()
-                        button.colorSet = BrandColor.green
-                        button.setTitle("Hello", for: .normal)
-                    }
-                    
-                    self.remoteView.addSubview(button)
-                } else if iy % 2 == 0 {
-                    let switchPanel = UIView(frame:rect)
-                    
-                    var btnFrame = rect
-                    btnFrame.origin = .zero
-                    btnFrame = btnFrame.insetBy(dx: CGFloat(padding), dy: CGFloat(padding))
-                    
-                    var labelFrame = btnFrame
-                    labelFrame.size.height /= CGFloat(3.0)
-                    labelFrame.origin.y = 0
-                    
-                    let switchLabel = UILabel(frame: labelFrame)
-                    switchLabel.text = "Hello"
-                    switchLabel.baselineAdjustment = .alignBaselines
-                    switchLabel.textAlignment = .center
-                    switchLabel.textColor = .white
-                    
-                    let switchBtn = UISwitch(frame: btnFrame)
-                    switchBtn.tintColor = BrandColor.gold.primary
-                    switchBtn.onTintColor = BrandColor.gold.primary
-                    let sx = (btnFrame.size.width - CGFloat(padding) * 2) / switchBtn.bounds.size.width
-                    let sy = (btnFrame.size.height - CGFloat(padding) * 2) / switchBtn.bounds.size.height
-                    let scale = min(sx, sy)
-                    switchBtn.transform = CGAffineTransform(scaleX: scale, y:scale)
-                    switchBtn.center.x = btnFrame.origin.x + btnFrame.size.width / 2
-                    switchBtn.center.y = btnFrame.origin.y + btnFrame.size.height / 2 +
-                                         (switchLabel.frame.size.height - CGFloat(padding)) / scale
-                    
-                    
-                    
-                    switchPanel.addSubview(switchBtn)
-                    switchPanel.addSubview(switchLabel)
-                    
-                    self.remoteView.addSubview(switchPanel)
-                } else {
-                    let slider = SliderPanel.loadFromNib(withColor: BrandColor.pink)
-                    slider.frame = rect
-
-                    self.remoteView.addSubview(slider)
-                }
-            }
-        }
-        
     }
 
 }

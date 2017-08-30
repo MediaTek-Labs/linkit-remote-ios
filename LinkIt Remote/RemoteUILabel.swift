@@ -15,6 +15,10 @@ extension UILabel {
         tintColor = c.secondary
         layer.cornerRadius = 10
         layer.borderWidth = 0
+        clipsToBounds = true    // we need this for corner radius to work.
+        tintColor = .white
+        textColor = .white
+        textAlignment = .center
     }
 }
 

@@ -38,6 +38,9 @@ class RCUUID {
     
     // String of control names, separated by the \n ASCII character
     static let CONTROL_NAME_LIST = CBUUID(string: "3f60ab39-1717-4456-930c-7e9c9539917e")
+    
+    // Array of UINT8[4], (event, event data, user data, seq id) that represents event of each control
+    static let CONTROL_EVENT_ARRAY = CBUUID(string: "3f60ab39-1718-4456-930c-7e9c9539917e")
 }
 
 enum ControlType : UInt8 {
@@ -46,6 +49,12 @@ enum ControlType : UInt8 {
     case circleButton = 3
     case switchButton = 4
     case slider = 5
+}
+
+enum ControlEvent : UInt8 {
+    case btnDown = 1
+    case btnUp
+    case valueChange
 }
 
 enum ColorType : UInt8 {
