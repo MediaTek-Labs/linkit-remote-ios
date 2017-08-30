@@ -110,6 +110,7 @@ class Device {
         self.name = name
         self.address = address
         self.peripheral = peripheral
+        self.rssi = rssi
     }
 
 }
