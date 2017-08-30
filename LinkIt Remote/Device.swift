@@ -40,7 +40,7 @@ class RCUUID {
     static let CONTROL_NAME_LIST = CBUUID(string: "3f60ab39-1717-4456-930c-7e9c9539917e")
     
     // Array of UINT8[4], (event, event data, user data, seq id) that represents event of each control
-    static let CONTROL_EVENT_ARRAY = CBUUID(string: "3f60ab39-1718-4456-930c-7e9c9539917e")
+    static let CONTROL_EVENT_ARRAY = CBUUID(string: "b5d2ff7b-6eff-4fb5-9b72-6b9cff5181e7")
 }
 
 enum ControlType : UInt8 {

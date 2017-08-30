@@ -25,6 +25,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var device : Device?
     var manager : CBCentralManager?
     var settings = [CBUUID : CBCharacteristic]()
+    var eventData = Data()
+    var eventCharacteristic : CBCharacteristic?
     
 
     //MARK: actions
@@ -32,15 +34,30 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         connect()
     }
     
-    func remoteButtonTapped(button : UIButton, forEvent event: UIEvent) {
-        print("button \(button.titleLabel?.text ?? "?") event \(event)")
+    func buttonUp(button : UIButton, forEvent event: UIControlEvents) {
+        let event = ControlEvent.btnUp
+        sendRemoteEvent(index: button.tag, event: event, data: 0)
+    }
+    
+    func buttonDown(button : UIButton, forEvent event: UIControlEvents) {
+        let event = ControlEvent.btnDown
+        sendRemoteEvent(index: button.tag, event: event, data: 0)
+    }
+    
+    func sliderChanged(slider: UISlider) {
+        sendRemoteEvent(index: slider.tag, event: .valueChange, data: UInt8(slider.value))
+    }
+    
+    func switched(button : UISwitch) {
+        let event = ControlEvent.valueChange
+        sendRemoteEvent(index: button.tag, event: event, data: UInt8(button.isOn ? 1 : 0))
     }
     
     @IBAction func done(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
     
-    //MARK view delegates
+    //MARK: view delegates
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -92,7 +109,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                               RCUUID.CONTROL_TYPE_ARRAY,
                               RCUUID.CONTROL_COLOR_ARRAY,
                               RCUUID.CONTROL_RECT_ARRAY,
-                              RCUUID.CONTROL_NAME_LIST]
+                              RCUUID.CONTROL_NAME_LIST,
+                              RCUUID.CONTROL_EVENT_ARRAY]
             
             peripheral.discoverCharacteristics(toDiscover, for: service)
         }
@@ -101,7 +119,15 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         print("did discovered")
         for c in service.characteristics ?? [] {
+            // read UI layout settings from remote device
             self.settings[c.uuid] = c
+            
+            print("UUID=\(c.uuid.uuidString)")
+            if c.uuid == RCUUID.CONTROL_EVENT_ARRAY {
+                print("found RC Array characteristics")
+                self.eventCharacteristic = c
+            }
+            
             peripheral.readValue(for: c)
         }
     }
@@ -119,6 +145,10 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             print("still reading characteristic...")
         }
         
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+        print("written with \(error)")
     }
     
     //MARK: Methods
@@ -169,12 +199,48 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 print("\(ci)")
             }
             
+            // setup output event array
+            // the array is a uint8[4] * (number of controls)
+            // the uint8[4] consists of (event, event data, user data, sequence)
+            eventData.resetBytes(in: 0..<(controlCount * 4))
+
+            
             print("creating controls...")
             createControls()
         }
     }
     
-    private func createControlBy(info: ControlInfo, frame: CGRect) -> UIView {
+    private func createControls() {
+        if let d = self.device {
+            let padding = CGFloat(4.0)
+            let vw = CGFloat(self.remoteView.frame.width)
+            let vh = CGFloat(self.remoteView.frame.height)
+            let cw = vw / CGFloat(d.col)
+            let ch = vh / CGFloat(d.row)
+            
+            var controlIndex = 0
+            
+            for info in d.controls {
+                
+                // calculate control frame
+                var rect = info.cell
+                rect = rect.applying(CGAffineTransform(scaleX: cw, y: ch))
+                rect = rect.insetBy(dx: padding, dy: padding)
+                
+                // create control
+                let view = createControlBy(info: info, frame: rect, useTag: controlIndex)
+                controlIndex += 1
+                
+                // insert to view
+                self.remoteView.addSubview(view)
+            }
+            
+        }
+        
+        spinner.stopAnimating()
+    }
+    
+    private func createControlBy(info: ControlInfo, frame: CGRect, useTag: Int) -> UIView {
         switch(info.type) {
         case .label:
             let label = UILabel(getColorSet(info.color))
@@ -182,32 +248,36 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             label.text = info.text
             label.layer.cornerRadius = 10
             return label
-        case .pushButton:
+            
+        case .pushButton,
+             .circleButton:
             let button = RemoteUIButton(getColorSet(info.color))
             button.frame = frame
             button.setTitle(info.text, for: .normal)
             button.titleLabel?.adjustsFontSizeToFitWidth = true
+            button.tag = useTag
+            
             // Setup the button action
             button.addTarget(self,
-                             action: #selector(RemoteViewController.remoteButtonTapped(button:forEvent:)),
+                             action: #selector(RemoteViewController.buttonUp(button:forEvent:)),
                              for: .touchUpInside)
-            return button
-        case .circleButton:
-            let button = RemoteUIButton(getColorSet(info.color))
-            button.setCircleStyle()
-            button.frame = frame
-            button.setTitle(info.text, for: .normal)
-            button.titleLabel?.adjustsFontSizeToFitWidth = true
-            // Setup the button action
             button.addTarget(self,
-                             action: #selector(RemoteViewController.remoteButtonTapped(button:forEvent:)),
-                             for: .touchUpInside)
+                             action: #selector(RemoteViewController.buttonDown(button:forEvent:)),
+                             for: .touchDown)
+            
+            if info.type == .circleButton {
+                button.setCircleStyle()
+            }
             return button
+            
         case .slider:
             let slider = SliderPanel.loadFromNib(withColor: getColorSet(info.color))
             slider.titleLabel.text = info.text
             slider.frame = frame
+            slider.slider.tag = useTag
+            slider.slider.addTarget(self, action: #selector(RemoteViewController.sliderChanged(slider:)), for: .touchUpInside)
             return slider
+            
         case .switchButton:
             let switchPanel = UIView(frame:frame)
             let padding = CGFloat(4.0)
@@ -239,42 +309,31 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             switchPanel.addSubview(switchBtn)
             switchPanel.addSubview(switchLabel)
             
+            switchBtn.tag = useTag
+            switchBtn.addTarget(self,
+                             action: #selector(RemoteViewController.switched(button:)),
+                             for: .valueChanged)
+            
             return switchPanel
         }
     }
     
-    private func createControls() {
-        if let d = self.device {
-            let padding = CGFloat(4.0)
-            let vw = CGFloat(self.remoteView.frame.width)
-            let vh = CGFloat(self.remoteView.frame.height)
-            let cw = vw / CGFloat(d.col)
-            let ch = vh / CGFloat(d.row)
-            
-            var controlIndex = 0
-            
-            for info in d.controls {
-                
-                // calculate control frame
-                var rect = info.cell
-                rect = rect.applying(CGAffineTransform(scaleX: cw, y: ch))
-                rect = rect.insetBy(dx: padding, dy: padding)
-                
-                // create control
-                let view = createControlBy(info: info, frame: rect)
-                
-                // add control tag so we can know
-                // its index in the CONTROL_EVENT_ARRAY BLE characteristic
-                view.tag = controlIndex
-                controlIndex += 1
-                
-                // insert to view
-                self.remoteView.addSubview(view)
-            }
-            
+    private func sendRemoteEvent(index : Int, event : ControlEvent, data: UInt8) {
+        if self.eventCharacteristic == nil {
+            print("characteristic not available")
+            return
         }
         
-        spinner.stopAnimating()
+        if let p = self.device?.peripheral {
+            eventData[index * 4 + 0] = event.rawValue  // Event
+            eventData[index * 4 + 1] = data       // Event data
+            eventData[index * 4 + 2] = 0          // User data, not used currently
+            eventData[index * 4 + 3] += 1         // sequence number - increment it
+            for i in eventData {
+                print("\(i)")
+            }
+            p.writeValue(eventData, for: self.eventCharacteristic!, type: .withResponse)
+        }
     }
 
 }
