@@ -35,13 +35,11 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     func buttonUp(button : UIButton, forEvent event: UIControlEvents) {
-        let event = ControlEvent.btnUp
-        sendRemoteEvent(index: button.tag, event: event, data: 0)
+        sendRemoteEvent(index: button.tag, event: .valueChange, data: 0)
     }
     
     func buttonDown(button : UIButton, forEvent event: UIControlEvents) {
-        let event = ControlEvent.btnDown
-        sendRemoteEvent(index: button.tag, event: event, data: 0)
+        sendRemoteEvent(index: button.tag, event: .valueChange, data: 1)
     }
     
     func sliderChanged(slider: UISlider) {
@@ -54,7 +52,9 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     @IBAction func done(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: {() -> Void in
+            self.clear()
+        })
     }
     
     //MARK: view delegates
@@ -122,7 +122,6 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             // read UI layout settings from remote device
             self.settings[c.uuid] = c
             
-            print("UUID=\(c.uuid.uuidString)")
             if c.uuid == RCUUID.CONTROL_EVENT_ARRAY {
                 print("found RC Array characteristics")
                 self.eventCharacteristic = c
@@ -134,7 +133,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         // check if there are still nil value(not read yet)
-        if self.settings.filter({$1.value == nil}).isEmpty {
+        if self.settings.count > 0 && self.settings.filter({$1.value == nil}).isEmpty {
             print("all field ready")
             if self.remoteView.subviews.isEmpty {
                 print("view empty, start creating controls")
@@ -154,7 +153,14 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     //MARK: Methods
     
     private func clear() {
+        
+        // Clear UI layout info
         settings.removeAll(keepingCapacity: true)
+        eventData.removeAll()
+        eventCharacteristic = nil
+        device?.controls.removeAll()
+        
+        // Clear UIView tree
         for s in self.remoteView.subviews {
             s.removeFromSuperview()
         }
@@ -184,6 +190,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             print("names = \(names)")
             
             // collect device control info
+            d.controls.removeAll()
             for i in 0..<controlCount {
                 let type = typeArray[i]
                 let color = colorArray[i]
@@ -290,7 +297,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             labelFrame.origin.y = 0
             
             let switchLabel = UILabel(frame: labelFrame)
-            switchLabel.text = "Hello"
+            switchLabel.text = info.text
             switchLabel.baselineAdjustment = .alignBaselines
             switchLabel.textAlignment = .center
             switchLabel.textColor = .white
