@@ -43,12 +43,12 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     func sliderChanged(slider: UISlider) {
-        sendRemoteEvent(index: slider.tag, event: .valueChange, data: UInt8(slider.value))
+        sendRemoteEvent(index: slider.tag, event: .valueChange, data: UInt16(slider.value))
     }
     
     func switched(button : UISwitch) {
         let event = ControlEvent.valueChange
-        sendRemoteEvent(index: button.tag, event: event, data: UInt8(button.isOn ? 1 : 0))
+        sendRemoteEvent(index: button.tag, event: event, data: UInt16(button.isOn ? 1 : 0))
     }
     
     @IBAction func done(_ sender: Any) {
@@ -325,17 +325,18 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         }
     }
     
-    private func sendRemoteEvent(index : Int, event : ControlEvent, data: UInt8) {
+    private func sendRemoteEvent(index : Int, event : ControlEvent, data: UInt16) {
         if self.eventCharacteristic == nil {
             print("characteristic not available")
             return
         }
         
         if let p = self.device?.peripheral {
-            eventData[index * 4 + 0] = event.rawValue  // Event
-            eventData[index * 4 + 1] = data       // Event data
-            eventData[index * 4 + 2] = 0          // User data, not used currently
-            eventData[index * 4 + 3] += 1         // sequence number - increment it
+            eventData[index * 4 + 0] += 1                       // sequence number - increment it
+            eventData[index * 4 + 1] = event.rawValue           // Event
+            eventData[index * 4 + 2] = UInt8(data & 0xFF);      // Event data, high byte
+            eventData[index * 4 + 3] = UInt8(data >> 8) & 0xFF; // Event data, low byte
+            
             for i in eventData {
                 print("\(i)")
             }
