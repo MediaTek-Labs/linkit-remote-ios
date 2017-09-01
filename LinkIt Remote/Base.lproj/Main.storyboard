@@ -30,40 +30,33 @@
                                 <rect key="frame" x="0.0" y="30" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tDr-wd-9HN" id="6B4-Gr-Em0">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Device Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HtC-g3-0N5">
-                                            <rect key="frame" x="8" y="8" width="254" height="29"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HtC-g3-0N5">
+                                            <rect key="frame" x="8" y="23" width="162.5" height="34"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="400" fixedFrame="YES" text="80:4C:28:54" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FER-Qp-NWX">
-                                            <rect key="frame" x="8" y="45" width="254" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RSSI Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzQ-mz-hdd">
-                                            <rect key="frame" x="281.5" y="29" width="85.5" height="20.5"/>
+                                            <rect key="frame" x="281" y="29" width="86" height="21"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="HtC-g3-0N5" firstAttribute="leading" secondItem="6B4-Gr-Em0" secondAttribute="leadingMargin" id="96Q-Ia-Js0"/>
                                         <constraint firstItem="dzQ-mz-hdd" firstAttribute="centerY" secondItem="6B4-Gr-Em0" secondAttribute="centerY" id="FWM-kP-QcG"/>
                                         <constraint firstItem="dzQ-mz-hdd" firstAttribute="trailing" secondItem="6B4-Gr-Em0" secondAttribute="trailingMargin" id="s28-gP-7y9"/>
+                                        <constraint firstItem="HtC-g3-0N5" firstAttribute="centerY" secondItem="6B4-Gr-Em0" secondAttribute="centerY" id="toh-Wg-JDh"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.15688700973987579" green="0.16055603325366974" blue="0.14142881333827972" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
-                                    <outlet property="addressLabel" destination="FER-Qp-NWX" id="7Y8-6B-Uqo"/>
                                     <outlet property="nameLabel" destination="HtC-g3-0N5" id="L3y-nf-z8f"/>
-                                    <outlet property="rssiLabel" destination="dzQ-mz-hdd" id="qGS-aY-Dtb"/>
+                                    <outlet property="rssiLabel" destination="dzQ-mz-hdd" id="Fc4-tb-by9"/>
                                     <segue destination="4RV-YV-Uzv" kind="presentation" identifier="ShowRemote" modalTransitionStyle="flipHorizontal" id="FgM-3M-Sza"/>
                                 </connections>
                             </tableViewCell>
@@ -183,7 +176,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="4RV-YV-Uzv" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="sWL-xv-e2t">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="sWL-xv-e2t">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.20784313730000001" green="0.21176470589999999" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>

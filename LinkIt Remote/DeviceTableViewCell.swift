@@ -10,11 +10,8 @@ import UIKit
 
 class DeviceTableViewCell: UITableViewCell {
     //MARK: properties
-    
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var rssiLabel: UILabel!
-    
     
     //MARK: cell methods
     override func awakeFromNib() {

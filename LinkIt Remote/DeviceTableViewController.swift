@@ -81,7 +81,6 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         // Configure the cell...
         let device = devices[indexPath.row]
         cell.nameLabel.text = device.name
-        cell.addressLabel.text = device.address
         cell.rssiLabel.text = "\(device.rssi ?? 0) dB"
         
         // return it to framework for caching/drawing
