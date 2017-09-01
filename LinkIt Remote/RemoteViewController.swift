@@ -15,6 +15,11 @@ func readInt(data : Data) -> Int {
     }))
 }
 
+struct RemoteQueryContext {
+    var toDiscover = Set<CBUUID>()
+    var toRead = Set<CBCharacteristic>()
+}
+
 class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
     @IBOutlet weak var navBar: UINavigationItem!
     @IBOutlet weak var remoteView: UIView!
@@ -24,6 +29,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     //MARK: properties
     var device : Device?
     var manager : CBCentralManager?
+    
+    var queryContext : RemoteQueryContext?
     var settings = [CBUUID : CBCharacteristic]()
     var eventData = Data()
     var eventCharacteristic : CBCharacteristic?
@@ -43,12 +50,12 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     func sliderChanged(slider: UISlider) {
-        sendRemoteEvent(index: slider.tag, event: .valueChange, data: UInt16(slider.value))
+        sendRemoteEvent(index: slider.tag, event: .valueChange, data: Int(slider.value))
     }
     
     func switched(button : UISwitch) {
         let event = ControlEvent.valueChange
-        sendRemoteEvent(index: button.tag, event: event, data: UInt16(button.isOn ? 1 : 0))
+        sendRemoteEvent(index: button.tag, event: event, data: button.isOn ? 1 : 0)
     }
     
     @IBAction func done(_ sender: Any) {
@@ -66,7 +73,6 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("remote view will appear2!")
         manager?.delegate = self
         connect()
     }
@@ -96,58 +102,73 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                         didConnect peripheral: CBPeripheral) {
         if peripheral == device?.peripheral {
             peripheral.delegate = self
-            peripheral.discoverServices([RCUUID.SERVICE])
+            if self.queryContext != nil {
+                peripheral.discoverServices([RCUUID.SERVICE])
+            }
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         if let service = peripheral.services?.first(where: { $0.uuid == RCUUID.SERVICE}) {
-            print("service found \(service), check characteristics")
-            let toDiscover = [RCUUID.CANVAS_ROW,
-                              RCUUID.CANVAS_COLUMN,
-                              RCUUID.CONTROL_COUNT,
-                              RCUUID.CONTROL_TYPE_ARRAY,
-                              RCUUID.CONTROL_COLOR_ARRAY,
-                              RCUUID.CONTROL_RECT_ARRAY,
-                              RCUUID.CONTROL_NAME_LIST,
-                              RCUUID.CONTROL_EVENT_ARRAY]
-            
-            peripheral.discoverCharacteristics(toDiscover, for: service)
+            if let context = self.queryContext {
+                print("querying service found \(service), check characteristics")
+                peripheral.discoverCharacteristics(Array(context.toDiscover), for: service)
+            }
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        print("did discovered")
-        for c in service.characteristics ?? [] {
-            // read UI layout settings from remote device
-            self.settings[c.uuid] = c
-            
-            if c.uuid == RCUUID.CONTROL_EVENT_ARRAY {
-                print("found RC Array characteristics")
-                self.eventCharacteristic = c
+        if self.queryContext != nil {
+            for characteristic in service.characteristics ?? [] {
+                self.queryContext!.toDiscover.remove(characteristic.uuid)
+                self.queryContext!.toRead.insert(characteristic)
             }
             
-            peripheral.readValue(for: c)
-        }
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        // check if there are still nil value(not read yet)
-        if self.settings.count > 0 && self.settings.filter({$1.value == nil}).isEmpty {
-            print("all field ready")
-            if self.remoteView.subviews.isEmpty {
-                print("view empty, start creating controls")
-                collectDeviceInfo()
+            // if all discovered, we start reading all the characteristics
+            if self.queryContext!.toDiscover.isEmpty {
+                for charToRead in self.queryContext!.toRead {
+                    peripheral.readValue(for: charToRead)
+                }
             }
-            
         } else {
-            print("still reading characteristic...")
+            print("not connecting, ignore attribute discover event")
+            return;
         }
+        
         
     }
     
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        if self.queryContext != nil {
+            // mark read
+            self.queryContext!.toRead.remove(characteristic)
+            
+            // insert to setting dict
+            self.settings[characteristic.uuid] = characteristic
+            if characteristic.uuid == RCUUID.CONTROL_EVENT_ARRAY {
+                self.eventCharacteristic = characteristic
+            }
+            
+            // check if all attributes are ready - if so, start
+            // creating controls
+            if self.queryContext!.toRead.isEmpty {
+                print("all field ready")
+                if self.remoteView.subviews.isEmpty {
+                    print("view empty, start creating controls")
+                    collectDeviceInfo()
+                }
+            }
+            
+        } else {
+            print("not connecting, ignore attribute read event")
+            return;
+        }
+    }
+    
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        print("written with \(error)")
+        if let e = error {
+            print("error writing characteristic \(characteristic.uuid) : error: \(e)")
+        }
     }
     
     //MARK: Methods
@@ -159,6 +180,11 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         eventData.removeAll()
         eventCharacteristic = nil
         device?.controls.removeAll()
+        queryContext = nil
+        
+        if let p = device?.peripheral {
+            manager?.cancelPeripheralConnection(p)
+        }
         
         // Clear UIView tree
         for s in self.remoteView.subviews {
@@ -166,11 +192,20 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         }
     }
     
-    // MARK: method
     private func connect() {
         clear()
         if let peripheral = device?.peripheral {
             spinner.startAnimating()
+            self.queryContext = RemoteQueryContext()
+            self.queryContext!.toDiscover = [RCUUID.CANVAS_ROW,
+                                            RCUUID.CANVAS_COLUMN,
+                                            RCUUID.CONTROL_COUNT,
+                                            RCUUID.CONTROL_TYPE_ARRAY,
+                                            RCUUID.CONTROL_COLOR_ARRAY,
+                                            RCUUID.CONTROL_RECT_ARRAY,
+                                            RCUUID.CONTROL_NAME_LIST,
+                                            RCUUID.CONTROL_EVENT_ARRAY,
+                                            RCUUID.CONTROL_CONFIG_DATA_ARRAY]
             manager?.connect(peripheral, options: nil)
         }
     }
@@ -186,11 +221,22 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             let nameData = settings[RCUUID.CONTROL_NAME_LIST]!.value!
             let nameString = String(data: nameData, encoding: String.Encoding.utf8)
             let names = nameString?.components(separatedBy: "\n") ?? []
-            
-            print("names = \(names)")
+            let configArray = settings[RCUUID.CONTROL_CONFIG_DATA_ARRAY]!.value!
             
             // collect device control info
             d.controls.removeAll()
+            
+            // decode 64-byte (4 * UInt16) config data for each control first
+            var configData = [ControlConfig]()
+            // Make sure the data array has exact same size as desired
+            assert(MemoryLayout<ControlConfig>.size * controlCount == configArray.count)
+            configArray.withUnsafeBytes({ (data: UnsafePointer<ControlConfig>) in
+                for i in 0..<controlCount {
+                    let c = data.advanced(by: i).pointee
+                    configData.append(c)
+                }
+            })
+            
             for i in 0..<controlCount {
                 let type = typeArray[i]
                 let color = colorArray[i]
@@ -201,9 +247,9 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 let ci = ControlInfo(type: ControlType(rawValue: type) ?? ControlType.label,
                                      color: ColorType(rawValue: color) ?? ColorType.gold,
                                      cell: CGRect(x: x, y: y, width: r, height: c),
-                                     text: names[i])
+                                     text: names[i],
+                                     config: configData[i])
                 d.controls.append(ci)
-                print("\(ci)")
             }
             
             // setup output event array
@@ -244,7 +290,9 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             
         }
         
+        // stop querying
         spinner.stopAnimating()
+        self.queryContext = nil
     }
     
     private func createControlBy(info: ControlInfo, frame: CGRect, useTag: Int) -> UIView {
@@ -282,6 +330,9 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             slider.titleLabel.text = info.text
             slider.frame = frame
             slider.slider.tag = useTag
+            slider.slider.minimumValue = Float(info.config.data1)
+            slider.slider.maximumValue = Float(info.config.data2)
+            slider.slider.value = Float(info.config.data3)
             slider.slider.addTarget(self, action: #selector(RemoteViewController.sliderChanged(slider:)), for: .touchUpInside)
             return slider
             
@@ -325,7 +376,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         }
     }
     
-    private func sendRemoteEvent(index : Int, event : ControlEvent, data: UInt16) {
+    private func sendRemoteEvent(index : Int, event : ControlEvent, data: Int) {
         if self.eventCharacteristic == nil {
             print("characteristic not available")
             return
@@ -335,11 +386,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             eventData[index * 4 + 0] += 1                       // sequence number - increment it
             eventData[index * 4 + 1] = event.rawValue           // Event
             eventData[index * 4 + 2] = UInt8(data & 0xFF);      // Event data, high byte
-            eventData[index * 4 + 3] = UInt8(data >> 8) & 0xFF; // Event data, low byte
-            
-            for i in eventData {
-                print("\(i)")
-            }
+            eventData[index * 4 + 3] = UInt8((data >> 8) & 0xFF); // Event data, low byte
             p.writeValue(eventData, for: self.eventCharacteristic!, type: .withResponse)
         }
     }

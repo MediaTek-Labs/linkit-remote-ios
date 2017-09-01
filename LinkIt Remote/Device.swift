@@ -41,6 +41,11 @@ class RCUUID {
     
     // Array of UINT8[4], (event, event data, user data, seq id) that represents event of each control
     static let CONTROL_EVENT_ARRAY = CBUUID(string: "b5d2ff7b-6eff-4fb5-9b72-6b9cff5181e7")
+    
+    // Array of UINT16[4], (data1, data2, data3, data4) for each control's value or data setting
+    // Current use cases:
+    //  - Slider : (min value, max value, initial value, reserved)
+    static let CONTROL_CONFIG_DATA_ARRAY = CBUUID(string: "5d7a63ff-4155-4c7c-a348-1c0a323a6383")
 }
 
 enum ControlType : UInt8 {
@@ -83,11 +88,19 @@ func getColorSet(_ t: ColorType) -> ColorSet {
     }
 }
 
+struct ControlConfig {
+    var data1 : Int16
+    var data2 : Int16
+    var data3 : Int16
+    var data4 : Int16
+}
+
 struct ControlInfo {
     var type : ControlType  // control type, such as button or label
     var color : ColorType   // control color set
     var cell : CGRect       // coordinate in Remote Grid, not actual screen space.
     var text : String       // control label text
+    var config : ControlConfig
 }
 
 class Device {

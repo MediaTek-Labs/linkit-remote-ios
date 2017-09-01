@@ -13,6 +13,7 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
     
     //MARK: defines
     let SERVICE_UUID = CBUUID(string: "19B10010-E8F2-537E-4F6C-D104768A1214")
+    let SCAN_DURATION = 5.0
     
     //MARK: properties
     var devices : [Device] = [Device]()
@@ -132,8 +133,6 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         } else {
             startScan()
         }
-        
-        startScan()
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
@@ -161,12 +160,14 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
     }
     
     private func startScan() {
+        self.devices.removeAll()
+        self.tableView.reloadData()
         self.manager.scanForPeripherals(withServices: [RCUUID.SERVICE], options: nil)
         
         // Scan for 10 seconds and we stop.
         // User cannot trigger scan again while scanning,
         // so disable the refresh button.
-        let SCAN_DURATION = 10.0
+        
         self.refreshButton.isEnabled = false
         self.scanProgressView.progress = 0.0
         self.scanProgressView.setProgress(0.0, animated: false)
