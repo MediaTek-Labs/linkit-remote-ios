@@ -19,6 +19,18 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
     var devices : [Device] = [Device]()
     var manager : CBCentralManager!
     
+    override var shouldAutorotate: Bool {
+        get {
+            return false
+        }
+    }
+    
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        get {
+            return .portrait
+        }
+    }
+    
     //MARK: controls
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     @IBOutlet weak var scanProgressView: UIProgressView!
@@ -47,8 +59,8 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("table view will appear!")
         manager?.delegate = self
+        AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
     }
 
     override func didReceiveMemoryWarning() {

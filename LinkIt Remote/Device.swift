@@ -46,6 +46,11 @@ class RCUUID {
     // Current use cases:
     //  - Slider : (min value, max value, initial value, reserved)
     static let CONTROL_CONFIG_DATA_ARRAY = CBUUID(string: "5d7a63ff-4155-4c7c-a348-1c0a323a6383")
+    
+    // Desired orientation for the UI remote view
+    //  0: portrait
+    //  1: landscape
+    static let CONTROL_ORIENTATION = CBUUID(string: "203fbbcd-9967-4eba-b0ff-0f72e5a634eb")
 }
 
 enum ControlType : UInt8 {
@@ -110,6 +115,7 @@ class Device {
     var address : String
     var peripheral : CBPeripheral?
     var rssi : Int?
+    var orientation = UIInterfaceOrientation.portrait
     
     // MARK: layout and UI control info
     

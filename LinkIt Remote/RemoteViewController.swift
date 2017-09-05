@@ -34,6 +34,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var settings = [CBUUID : CBCharacteristic]()
     var eventData = Data()
     var eventCharacteristic : CBCharacteristic?
+    var isCreatingControlforOrientation = false
     
 
     //MARK: actions
@@ -52,6 +53,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     func sliderChanged(slider: UISlider) {
         sendRemoteEvent(index: slider.tag, event: .valueChange, data: Int(slider.value))
     }
+
     
     func switched(button : UISwitch) {
         let event = ControlEvent.valueChange
@@ -59,7 +61,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     @IBAction func done(_ sender: Any) {
-        self.dismiss(animated: true, completion: {() -> Void in
+        self.presentingViewController?.dismiss(animated: true, completion: {() -> Void in
             self.clear()
         })
     }
@@ -74,7 +76,13 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     override func viewWillAppear(_ animated: Bool) {
         manager?.delegate = self
-        connect()
+        
+        // check if device info is known
+        if self.device?.controls.isEmpty ?? true {
+            print("Get dev info")
+            clear()
+            connect()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -89,7 +97,18 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
-
+    
+    override func viewDidLayoutSubviews() {
+        // CAUTION: this method can be called mutiple times, 
+        // even during control creation process.
+        // Therefore a flag is being used to ensure controls
+        // are only created once.
+        if self.remoteView.subviews.isEmpty && self.isCreatingControlforOrientation {
+            self.isCreatingControlforOrientation = false
+            createControls()
+        }
+        
+    }
     
     //MARK: BLE delegates
     
@@ -152,9 +171,9 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             // check if all attributes are ready - if so, start
             // creating controls
             if self.queryContext!.toRead.isEmpty {
-                print("all field ready")
+                print("all field ready, exiting query stage")
+                self.queryContext = nil
                 if self.remoteView.subviews.isEmpty {
-                    print("view empty, start creating controls")
                     collectDeviceInfo()
                 }
             }
@@ -205,7 +224,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                                             RCUUID.CONTROL_RECT_ARRAY,
                                             RCUUID.CONTROL_NAME_LIST,
                                             RCUUID.CONTROL_EVENT_ARRAY,
-                                            RCUUID.CONTROL_CONFIG_DATA_ARRAY]
+                                            RCUUID.CONTROL_CONFIG_DATA_ARRAY,
+                                            RCUUID.CONTROL_ORIENTATION]
             manager?.connect(peripheral, options: nil)
         }
     }
@@ -214,6 +234,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         if let d = self.device {
             d.row = readInt(data: settings[RCUUID.CANVAS_ROW]!.value!)
             d.col = readInt(data: settings[RCUUID.CANVAS_COLUMN]!.value!)
+            d.orientation = readInt(data: settings[RCUUID.CONTROL_ORIENTATION]!.value!) == 1 ?
+                                    .landscapeRight : .portrait
             let controlCount = readInt(data: settings[RCUUID.CONTROL_COUNT]!.value!)
             let typeArray = settings[RCUUID.CONTROL_TYPE_ARRAY]!.value!
             let colorArray = settings[RCUUID.CONTROL_COLOR_ARRAY]!.value!
@@ -258,9 +280,26 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             eventData.resetBytes(in: 0..<(controlCount * 4))
 
             
-            print("creating controls...")
-            createControls()
+            // set and lock display orientation
+            print("rotate view before we create controls")
+            self.isCreatingControlforOrientation = true
+            refreshOrientation()
         }
+    }
+    
+    
+    // force refresh view orientation
+    private func refreshOrientation() {
+        let orientation = self.device?.orientation ?? UIInterfaceOrientation.portrait
+        
+        AppUtility.lockOrientation(orientation == .portrait ?
+            UIInterfaceOrientationMask.portrait :
+            UIInterfaceOrientationMask.landscapeRight,
+                                   andRotateTo: orientation)
+        
+        // force refresh the view and subview layout
+        // we'll create the controls AFTER the subviews layout has completed
+        self.view.setNeedsLayout()
     }
     
     private func createControls() {
@@ -292,7 +331,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         
         // stop querying
         spinner.stopAnimating()
-        self.queryContext = nil
+        
     }
     
     private func createControlBy(info: ControlInfo, frame: CGRect, useTag: Int) -> UIView {
