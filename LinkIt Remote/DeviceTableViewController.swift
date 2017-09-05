@@ -41,7 +41,9 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
     }
     
     @IBAction func openHelpPage() {
-        let url = NSURL(string:"http://labs.mediatek.com/")! as URL
+        let path = "https://docs.labs.mediatek.com/resource/linkit7697-arduino/en/developer-guide/using-linkit-remote"
+        
+        let url = NSURL(string:path)! as URL
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
