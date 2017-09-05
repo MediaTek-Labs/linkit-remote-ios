@@ -108,7 +108,7 @@
                                 <color key="backgroundColor" red="0.20784313725490194" green="0.21176470588235294" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <activityIndicatorView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="HKB-jl-PXP">
-                                <rect key="frame" x="169.5" y="283" width="37" height="37"/>
+                                <rect key="frame" x="169" y="283" width="37" height="37"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.20784313725490194" green="0.21176470588235294" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>

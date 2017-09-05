@@ -1,0 +1,15 @@
+
+/* Class = "UIViewController"; title = "Remote Device"; ObjectID = "0tg-PM-CFJ"; */
+"0tg-PM-CFJ.title" = "Remote Device";
+
+/* Class = "UINavigationItem"; title = "Device"; ObjectID = "AhM-LA-4YX"; */
+"AhM-LA-4YX.title" = "Device";
+
+/* Class = "UILabel"; text = "Device Name"; ObjectID = "HtC-g3-0N5"; */
+"HtC-g3-0N5.text" = "Device Name";
+
+/* Class = "UILabel"; text = "RSSI Label"; ObjectID = "dzQ-mz-hdd"; */
+"dzQ-mz-hdd.text" = "RSSI Label";
+
+/* Class = "UINavigationItem"; title = "Devices"; ObjectID = "qNz-NI-Zrr"; */
+"qNz-NI-Zrr.title" = "Devices";

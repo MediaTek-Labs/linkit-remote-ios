@@ -36,7 +36,7 @@
 
 /* Begin PBXFileReference section */
 		FC1C0EC71F5E544F006445E2 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
-		FC1C0EC81F5E544F006445E2 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		FC1C0ECC1F5E6A20006445E2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		FC58E77D1F4EC823001A9038 /* SliderPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SliderPanel.xib; sourceTree = "<group>"; };
 		FC58E77F1F4EC835001A9038 /* SliderPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderPanel.swift; sourceTree = "<group>"; };
 		FC58E7811F4FD26D001A9038 /* ColorSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSet.swift; sourceTree = "<group>"; };
@@ -276,6 +276,7 @@
 			children = (
 				FCEF8DE91F4D16AA00587029 /* Base */,
 				FC1C0EC71F5E544F006445E2 /* zh-Hant */,
+				FC1C0ECC1F5E6A20006445E2 /* en */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -284,7 +285,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				FCEF8DEE1F4D16AA00587029 /* Base */,
-				FC1C0EC81F5E544F006445E2 /* zh-Hant */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
