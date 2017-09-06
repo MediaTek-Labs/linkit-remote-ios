@@ -1,6 +1,8 @@
-
 /* Class = "UIViewController"; title = "Remote Device"; ObjectID = "0tg-PM-CFJ"; */
 "0tg-PM-CFJ.title" = "遠端裝置";
+
+/* Class = "UILabel"; text = "Disconnected. Tap Refresh button to connect again."; ObjectID = "2DY-e6-BWj"; */
+"2DY-e6-BWj.text" = "裝置斷線，請點擊重新整理按鈕來重新連線";
 
 /* Class = "UINavigationItem"; title = "Device"; ObjectID = "AhM-LA-4YX"; */
 "AhM-LA-4YX.title" = "裝置";
@@ -13,3 +15,4 @@
 
 /* Class = "UINavigationItem"; title = "Devices"; ObjectID = "qNz-NI-Zrr"; */
 "qNz-NI-Zrr.title" = "裝置列表";
+

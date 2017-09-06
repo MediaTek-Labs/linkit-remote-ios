@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FC28274A1F5FED1A00A675E8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC28274C1F5FED1A00A675E8 /* InfoPlist.strings */; };
+		FC28274F1F5FED1B00A675E8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC2827511F5FED1B00A675E8 /* InfoPlist.strings */; };
 		FC58E77E1F4EC823001A9038 /* SliderPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC58E77D1F4EC823001A9038 /* SliderPanel.xib */; };
 		FC58E7801F4EC835001A9038 /* SliderPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58E77F1F4EC835001A9038 /* SliderPanel.swift */; };
 		FC58E7821F4FD26D001A9038 /* ColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58E7811F4FD26D001A9038 /* ColorSet.swift */; };
@@ -37,6 +39,9 @@
 /* Begin PBXFileReference section */
 		FC1C0EC71F5E544F006445E2 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		FC1C0ECC1F5E6A20006445E2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		FC2827471F5FED1A00A675E8 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		FC28274B1F5FED1A00A675E8 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		FC2827501F5FED1B00A675E8 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		FC58E77D1F4EC823001A9038 /* SliderPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SliderPanel.xib; sourceTree = "<group>"; };
 		FC58E77F1F4EC835001A9038 /* SliderPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderPanel.swift; sourceTree = "<group>"; };
 		FC58E7811F4FD26D001A9038 /* ColorSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSet.swift; sourceTree = "<group>"; };
@@ -99,6 +104,7 @@
 		FCEF8DE31F4D16AA00587029 /* LinkIt Remote */ = {
 			isa = PBXGroup;
 			children = (
+				FC28274C1F5FED1A00A675E8 /* InfoPlist.strings */,
 				FCEF8DE41F4D16AA00587029 /* AppDelegate.swift */,
 				FC58E7811F4FD26D001A9038 /* ColorSet.swift */,
 				FCEF8DE61F4D16AA00587029 /* DeviceTableViewController.swift */,
@@ -120,6 +126,7 @@
 		FCEF8DF81F4D16AA00587029 /* LinkIt RemoteTests */ = {
 			isa = PBXGroup;
 			children = (
+				FC2827511F5FED1B00A675E8 /* InfoPlist.strings */,
 				FCEF8DF91F4D16AA00587029 /* LinkIt_RemoteTests.swift */,
 				FCEF8DFB1F4D16AA00587029 /* Info.plist */,
 			);
@@ -223,6 +230,7 @@
 				FCEF8DEC1F4D16AA00587029 /* Assets.xcassets in Resources */,
 				FCEF8DEA1F4D16AA00587029 /* Main.storyboard in Resources */,
 				FC58E77E1F4EC823001A9038 /* SliderPanel.xib in Resources */,
+				FC28274A1F5FED1A00A675E8 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +238,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC28274F1F5FED1B00A675E8 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +280,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		FC28274C1F5FED1A00A675E8 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FC28274B1F5FED1A00A675E8 /* zh-Hant */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		FC2827511F5FED1B00A675E8 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FC2827501F5FED1B00A675E8 /* zh-Hant */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		FCEF8DE81F4D16AA00587029 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -285,6 +310,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				FCEF8DEE1F4D16AA00587029 /* Base */,
+				FC2827471F5FED1A00A675E8 /* zh-Hant */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";

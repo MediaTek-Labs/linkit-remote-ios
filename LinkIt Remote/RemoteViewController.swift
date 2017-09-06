@@ -25,6 +25,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     @IBOutlet weak var remoteView: UIView!
     @IBOutlet var canvas: UIView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
+    @IBOutlet weak var blurView: UIVisualEffectView!
     
     //MARK: properties
     var device : Device?
@@ -114,7 +115,17 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         print("state= \(central.state) from RemoteViewController")
-        
+    }
+    
+    func centralManager(_ central: CBCentralManager,
+                        didDisconnectPeripheral peripheral: CBPeripheral,
+                        error: Error?){
+        if device?.peripheral == peripheral {
+            print("remote device disconnected")
+            if !remoteView.subviews.isEmpty {
+                blurView.isHidden = false
+            }
+        }
     }
     
     func centralManager(_ central: CBCentralManager,
@@ -123,6 +134,13 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             peripheral.delegate = self
             if self.queryContext != nil {
                 peripheral.discoverServices([RCUUID.SERVICE])
+            } else if !remoteView.subviews.isEmpty {
+                // we already created control - re-enable it.
+                for v in remoteView.subviews {
+                    if let c = v as? UIControl {
+                        c.isEnabled = true
+                    }
+                }
             }
         }
     }
@@ -200,6 +218,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         eventCharacteristic = nil
         device?.controls.removeAll()
         queryContext = nil
+        blurView.isHidden = true
         
         if let p = device?.peripheral {
             manager?.cancelPeripheralConnection(p)
