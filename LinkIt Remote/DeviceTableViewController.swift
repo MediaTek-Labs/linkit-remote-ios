@@ -44,7 +44,12 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         let path = "https://docs.labs.mediatek.com/resource/linkit7697-arduino/en/developer-guide/using-linkit-remote"
         
         let url = NSURL(string:path)! as URL
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            // Fallback on earlier versions
+            UIApplication.shared.openURL(url)
+        }
     }
     
     
@@ -190,11 +195,10 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         UIView.animate(withDuration: SCAN_DURATION, delay: 0.0, options: .curveEaseOut, animations: { () -> Void in self.scanProgressView.setProgress(1.0, animated: true)})
         
         // set timer to stop scanning
-        Timer.scheduledTimer(withTimeInterval: SCAN_DURATION, repeats: false, block: {(t : Timer) -> Void
-            in self.stopScan()})
+        Timer.scheduledTimer(timeInterval: SCAN_DURATION, target: self, selector: #selector(self.stopScan), userInfo: nil, repeats: false)
     }
     
-    private func stopScan() {
+    func stopScan() {
         // stop scanning, stop timer and then reset counter
         self.manager?.stopScan()
         self.scanProgressView.isHidden = true
