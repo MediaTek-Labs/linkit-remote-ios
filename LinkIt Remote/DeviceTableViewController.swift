@@ -146,11 +146,7 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
     //MARK: CBCentralManagerDelegates
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         print("state= \(central.state) from TableViewController")
-        if central.state != .poweredOn {
-            print("bluetooth not powered on")
-        } else {
-            startScan()
-        }
+        startScan()
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
@@ -178,6 +174,14 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
     }
     
     private func startScan() {
+        if self.manager.state != .poweredOn {
+            let msg = NSLocalizedString("Bluetooth Message", comment: "")
+            let alert = UIAlertController(title: "Bluetooth", message: msg, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
         self.devices.removeAll()
         self.tableView.reloadData()
         self.manager.scanForPeripherals(withServices: [RCUUID.SERVICE], options: nil)

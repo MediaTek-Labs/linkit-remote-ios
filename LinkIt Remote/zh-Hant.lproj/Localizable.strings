@@ -1,0 +1,8 @@
+/* 
+  Localizable.strings
+  LinkIt Remote
+
+  Created by Pablo Sun on 2017/9/7.
+  Copyright © 2017年 MediaTek Labs. All rights reserved.
+*/
+"Bluetooth Message" = "請先啟用藍牙";
