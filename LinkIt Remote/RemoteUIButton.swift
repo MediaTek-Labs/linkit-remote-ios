@@ -57,7 +57,7 @@ class RemoteUIButton : UIButton {
         self.frame.origin.y = center.1 - radius
         self.frame.size.width = radius * 2
         self.frame.size.height = radius * 2
-        self.titleLabel?.font = self.titleLabel?.font.withSize(40.0)
+        // self.titleLabel?.font = self.titleLabel?.font.withSize(32.0)
         self.titleLabel?.baselineAdjustment = .alignCenters
     }
 }

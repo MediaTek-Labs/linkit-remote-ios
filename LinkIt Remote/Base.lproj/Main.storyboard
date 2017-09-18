@@ -30,7 +30,7 @@
                                 <rect key="frame" x="0.0" y="30" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tDr-wd-9HN" id="6B4-Gr-Em0">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HtC-g3-0N5">
@@ -103,9 +103,8 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mB-b9-gyq">
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mB-b9-gyq">
                                 <rect key="frame" x="4" y="4" width="367" height="595"/>
-                                <color key="backgroundColor" red="0.20784313725490194" green="0.21176470588235294" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TCd-o3-oKC">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
@@ -163,6 +162,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="blurText" destination="2DY-e6-BWj" id="kVQ-CC-7TF"/>
                         <outlet property="blurView" destination="TCd-o3-oKC" id="62V-ps-35B"/>
                         <outlet property="canvas" destination="0ts-mG-0Nw" id="uaM-Od-ndA"/>
                         <outlet property="navBar" destination="AhM-LA-4YX" id="tbl-Be-nwE"/>

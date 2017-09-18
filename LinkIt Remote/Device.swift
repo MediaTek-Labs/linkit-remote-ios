@@ -51,6 +51,9 @@ class RCUUID {
     //  0: portrait
     //  1: landscape
     static let CONTROL_ORIENTATION = CBUUID(string: "203fbbcd-9967-4eba-b0ff-0f72e5a634eb")
+    
+    // protocol version, to ensure version match between arduino and mobile.
+    static let PROTOCOL_VERSION = CBUUID(string: "ae73266e-65d4-4023-8868-88b070d5d576");
 }
 
 enum ControlType : UInt8 {
@@ -110,6 +113,8 @@ struct ControlInfo {
 
 class Device {
     //MARK: properties
+    
+    static let PROTOCAL_VERSION = 2
     
     var name : String
     var address : String

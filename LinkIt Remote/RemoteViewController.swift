@@ -26,6 +26,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     @IBOutlet var canvas: UIView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var blurView: UIVisualEffectView!
+    @IBOutlet weak var blurText: UILabel!
     
     //MARK: properties
     var device : Device?
@@ -34,6 +35,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var queryContext : RemoteQueryContext?
     var settings = [CBUUID : CBCharacteristic]()
     var eventData = Data()
+    var eventSeq = UInt8(0)
     var eventCharacteristic : CBCharacteristic?
     var isCreatingControlforOrientation = false
     
@@ -123,7 +125,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         if device?.peripheral == peripheral {
             print("remote device disconnected")
             if !remoteView.subviews.isEmpty {
-                blurView.isHidden = false
+                let msg = NSLocalizedString("Disconnected Message", comment: "")
+                showErrorMsg(msg)
             }
         }
     }
@@ -156,6 +159,16 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         if self.queryContext != nil {
+            // check if PROTOCOL_VERSION is available
+            // if not, we need to ask user to upgrade LRemote Arduino library.
+            if let clist = service.characteristics {
+                if 0 == clist.filter({ $0.uuid == RCUUID.PROTOCOL_VERSION}).count {
+                    let msg = NSLocalizedString("Mismatched Version", comment: "")
+                    showErrorMsg(msg)
+                    return
+                }
+            }
+            
             for characteristic in service.characteristics ?? [] {
                 self.queryContext!.toDiscover.remove(characteristic.uuid)
                 self.queryContext!.toRead.insert(characteristic)
@@ -169,7 +182,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             }
         } else {
             print("not connecting, ignore attribute discover event")
-            return;
+            return
         }
         
         
@@ -210,6 +223,16 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     //MARK: Methods
     
+    private func showErrorMsg(_ msg: String) {
+        self.blurText.text = msg
+        self.blurView.isHidden = false
+        self.spinner.isHidden = true
+    }
+    
+    private func hideErrorMsg() {
+        self.blurView.isHidden = true
+    }
+    
     private func clear() {
         
         // Clear UI layout info
@@ -218,7 +241,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         eventCharacteristic = nil
         device?.controls.removeAll()
         queryContext = nil
-        blurView.isHidden = true
+        hideErrorMsg()
         
         if let p = device?.peripheral {
             manager?.cancelPeripheralConnection(p)
@@ -234,6 +257,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         clear()
         if let peripheral = device?.peripheral {
             spinner.startAnimating()
+            
             self.queryContext = RemoteQueryContext()
             self.queryContext!.toDiscover = [RCUUID.CANVAS_ROW,
                                             RCUUID.CANVAS_COLUMN,
@@ -244,7 +268,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                                             RCUUID.CONTROL_NAME_LIST,
                                             RCUUID.CONTROL_EVENT_ARRAY,
                                             RCUUID.CONTROL_CONFIG_DATA_ARRAY,
-                                            RCUUID.CONTROL_ORIENTATION]
+                                            RCUUID.CONTROL_ORIENTATION,
+                                            RCUUID.PROTOCOL_VERSION]
             manager?.connect(peripheral, options: nil)
         }
     }
@@ -255,7 +280,9 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             d.col = readInt(data: settings[RCUUID.CANVAS_COLUMN]!.value!)
             d.orientation = readInt(data: settings[RCUUID.CONTROL_ORIENTATION]!.value!) == 1 ?
                                     .landscapeRight : .portrait
+            let version = readInt(data: settings[RCUUID.PROTOCOL_VERSION]!.value!)
             let controlCount = readInt(data: settings[RCUUID.CONTROL_COUNT]!.value!)
+            
             let typeArray = settings[RCUUID.CONTROL_TYPE_ARRAY]!.value!
             let colorArray = settings[RCUUID.CONTROL_COLOR_ARRAY]!.value!
             let rectArray = settings[RCUUID.CONTROL_RECT_ARRAY]!.value!
@@ -263,6 +290,11 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             let nameString = String(data: nameData, encoding: String.Encoding.utf8)
             let names = nameString?.components(separatedBy: "\n") ?? []
             let configArray = settings[RCUUID.CONTROL_CONFIG_DATA_ARRAY]!.value!
+            
+            if version != Device.PROTOCAL_VERSION {
+                let msg = NSLocalizedString("Mismatched Version", comment: "")
+                showErrorMsg(msg)
+            }
             
             // collect device control info
             d.controls.removeAll()
@@ -293,11 +325,9 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 d.controls.append(ci)
             }
             
-            // setup output event array
-            // the array is a uint8[4] * (number of controls)
-            // the uint8[4] consists of (event, event data, user data, sequence)
-            eventData.resetBytes(in: 0..<(controlCount * 4))
-
+            eventData.reserveCapacity(6);
+            eventData.resetBytes(in: 0..<6)
+            eventSeq = 0
             
             // set and lock display orientation
             print("rotate view before we create controls")
@@ -391,6 +421,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             slider.slider.minimumValue = Float(info.config.data1)
             slider.slider.maximumValue = Float(info.config.data2)
             slider.slider.value = Float(info.config.data3)
+            slider.valueLabel.text = "\(Int(slider.slider.value))"
             slider.slider.addTarget(self, action: #selector(RemoteViewController.sliderChanged(slider:)), for: .touchUpInside)
             return slider
             
@@ -441,10 +472,18 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         }
         
         if let p = self.device?.peripheral {
-            eventData[index * 4 + 0] += 1                       // sequence number - increment it
-            eventData[index * 4 + 1] = event.rawValue           // Event
-            eventData[index * 4 + 2] = UInt8(data & 0xFF);      // Event data, high byte
-            eventData[index * 4 + 3] = UInt8((data >> 8) & 0xFF); // Event data, low byte
+            if let d = self.eventCharacteristic?.value {
+                eventData = d
+            }
+            // 6 bytes of EventInfo
+            eventData.reserveCapacity(6)
+            eventData[0] = eventSeq                       // sequence number - increment it
+            eventSeq += 1
+            eventData[1] = UInt8(index)
+            eventData[2] = event.rawValue           // Event
+            // eventData[3] =                       // These are processed by Arduno side - don't touch
+            eventData[4] = UInt8(data & 0xFF);      // Event data, high byte
+            eventData[5] = UInt8((data >> 8) & 0xFF); // Event data, low byte
             p.writeValue(eventData, for: self.eventCharacteristic!, type: .withResponse)
         }
     }
