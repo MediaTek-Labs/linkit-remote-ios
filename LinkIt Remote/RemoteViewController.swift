@@ -38,6 +38,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var eventSeq = UInt8(0)
     var eventCharacteristic : CBCharacteristic?
     var isCreatingControlforOrientation = false
+    var isSendingValue = false
+    var sendingActions = [() -> Void]()
     
 
     //MARK: actions
@@ -216,6 +218,19 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+        
+        if(characteristic == self.eventCharacteristic) {
+            print("write done!")
+            if self.sendingActions.isEmpty {
+                self.isSendingValue = false
+            } else {
+                // keep send next request
+                let action = self.sendingActions.removeFirst()
+                action();
+            }
+            
+        }
+        
         if let e = error {
             print("error writing characteristic \(characteristic.uuid) : error: \(e)")
         }
@@ -471,21 +486,34 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             return
         }
         
-        if let p = self.device?.peripheral {
-            if let d = self.eventCharacteristic?.value {
-                eventData = d
+        let sendAction = { () -> Void in
+            if let p = self.device?.peripheral {
+                var eventData = Data()
+                if let d = self.eventCharacteristic?.value {
+                    eventData = d
+                }
+                // 6 bytes of EventInfo
+                eventData.reserveCapacity(6)
+                eventData[0] = self.eventSeq                       // sequence number - increment it
+                self.self.eventSeq += 1
+                eventData[1] = UInt8(index)
+                eventData[2] = event.rawValue           // Event
+                // eventData[3] =                       // These are processed by Arduno side - don't touch
+                eventData[4] = UInt8(data & 0xFF);      // Event data, high byte
+                eventData[5] = UInt8((data >> 8) & 0xFF); // Event data, low byte
+                
+                p.writeValue(eventData, for: self.eventCharacteristic!, type: .withResponse)
             }
-            // 6 bytes of EventInfo
-            eventData.reserveCapacity(6)
-            eventData[0] = eventSeq                       // sequence number - increment it
-            eventSeq += 1
-            eventData[1] = UInt8(index)
-            eventData[2] = event.rawValue           // Event
-            // eventData[3] =                       // These are processed by Arduno side - don't touch
-            eventData[4] = UInt8(data & 0xFF);      // Event data, high byte
-            eventData[5] = UInt8((data >> 8) & 0xFF); // Event data, low byte
-            p.writeValue(eventData, for: self.eventCharacteristic!, type: .withResponse)
         }
+        
+        if(self.isSendingValue) {
+            self.sendingActions.append(sendAction)
+        } else {
+            self.isSendingValue = true
+            sendAction()
+        }
+        
+        
     }
 
 }
