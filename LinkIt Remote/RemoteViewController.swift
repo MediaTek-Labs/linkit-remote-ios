@@ -463,12 +463,12 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             switchBtn.tintColor = colorSet.primary
             switchBtn.onTintColor = colorSet.primary
             let sx = (btnFrame.size.width - padding * 2) / switchBtn.bounds.size.width
-            let sy = (btnFrame.size.height - padding * 2) / switchBtn.bounds.size.height
+            let sy = (btnFrame.size.height - padding * 2 - labelFrame.size.height) / switchBtn.bounds.size.height
             let scale = min(sx, sy)
             switchBtn.transform = CGAffineTransform(scaleX: scale, y:scale)
             switchBtn.center.x = btnFrame.origin.x + btnFrame.size.width / 2
             switchBtn.center.y = btnFrame.origin.y + btnFrame.size.height / 2 +
-                (switchLabel.frame.size.height - padding) / scale
+                (switchLabel.frame.size.height + padding) / scale
             switchPanel.addSubview(switchBtn)
             switchPanel.addSubview(switchLabel)
             
