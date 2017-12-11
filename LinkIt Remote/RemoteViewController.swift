@@ -40,7 +40,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var isCreatingControlforOrientation = false
     var isSendingValue = false
     var sendingActions = [() -> Void]()
-    
+    var sliderEventTimer : Timer?
+    let SLIDER_UPDATE_INTERVAL = 0.1    // update slider value when dragging. Unit is second.
 
     //MARK: actions
     @IBAction func refreshDevice(_ sender: Any) {
@@ -55,10 +56,36 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         sendRemoteEvent(index: button.tag, event: .valueChange, data: 1)
     }
     
-    func sliderChanged(slider: UISlider) {
-        sendRemoteEvent(index: slider.tag, event: .valueChange, data: Int(slider.value))
+    func delayedSend(_ timer : Timer) {
+        if let info = timer.userInfo as? (Int, Int) {
+            let (tag, sliderVal) = info
+            self.sendRemoteEvent(index: tag, event: .valueChange, data: sliderVal)
+        }
+        // clear the flag so we can send next event
+        self.sliderEventTimer = nil
     }
-
+    
+    func sliderChanged(slider: UISlider) {
+        let sliderEvent : (Int, Int) = (slider.tag, Int(slider.value))
+        // check if 0.3 second has passed before previous
+        if self.sliderEventTimer == nil {
+            self.sliderEventTimer = Timer.scheduledTimer(timeInterval: SLIDER_UPDATE_INTERVAL,
+                                                         target: self,
+                                                         selector: #selector(self.delayedSend(_:)),
+                                                         userInfo: sliderEvent,
+                                                         repeats: false)
+            
+        }
+    }
+    
+    func sliderReleased(slider: UISlider) {
+        let sliderEvent : (Int, Int) = (slider.tag, Int(slider.value))
+        // cancel previous events and send event immediately
+        self.sliderEventTimer?.invalidate()
+        self.sliderEventTimer = nil
+        let (tag, value) = sliderEvent
+        self.sendRemoteEvent(index: tag, event: .valueChange, data: value)
+    }
     
     func switched(button : UISwitch) {
         let event = ControlEvent.valueChange
@@ -438,7 +465,10 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             slider.slider.maximumValue = Float(info.config.data2)
             slider.slider.value = Float(info.config.data3)
             slider.valueLabel.text = "\(Int(slider.slider.value))"
-            slider.slider.addTarget(self, action: #selector(RemoteViewController.sliderChanged(slider:)), for: .touchUpInside)
+            slider.slider.addTarget(self, action: #selector(RemoteViewController.sliderChanged(slider:)),
+                                    for: .valueChanged)
+            slider.slider.addTarget(self, action: #selector(RemoteViewController.sliderReleased(slider:)),
+                                    for: [.touchUpInside, .touchUpOutside])
             return slider
             
         case .switchButton:
