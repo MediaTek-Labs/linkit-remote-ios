@@ -224,8 +224,15 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             
             // insert to setting dict
             self.settings[characteristic.uuid] = characteristic
-            if characteristic.uuid == RCUUID.CONTROL_EVENT_ARRAY {
+            
+            // special handling cases
+            switch(characteristic.uuid) {
+            case RCUUID.CONTROL_EVENT_ARRAY:
                 self.eventCharacteristic = characteristic
+            case RCUUID.CONTROL_UI_UPDATE:
+                peripheral.setNotifyValue(true, for: characteristic)
+            default:
+                break
             }
             
             // check if all attributes are ready - if so, start
@@ -238,6 +245,31 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 }
             }
             
+        } else if characteristic.uuid == RCUUID.CONTROL_UI_UPDATE {
+            
+            // for UI text update
+            if let updateInfoData = characteristic.value {
+                
+                // retrieve control index and text to update
+                let (controlIndex, text) = updateInfoData.withUnsafeBytes({(body:UnsafePointer<UIUpdateInfo>) -> (Int, String) in
+                    var info = body.pointee
+                    let textData = Data(bytes: &info.data, count: Int(info.dataSize))
+                    let textString = String(data: textData, encoding: String.Encoding.utf8) ?? NSLocalizedString("Transmission Error", comment: "")
+                    return (Int(info.controlIndex), textString)
+                })
+                
+                // find the view object with the control index, and check if it is an UILabel
+                if let controls = self.device?.controls {
+                    for info in controls {
+                        if info.index == controlIndex {
+                            if let label = info.view as? UILabel {
+                                label.text = text
+                            }
+                        }
+                    }
+                }
+                
+            }
         } else {
             print("not connecting, ignore attribute read event")
             return;
@@ -310,6 +342,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                                             RCUUID.CONTROL_RECT_ARRAY,
                                             RCUUID.CONTROL_NAME_LIST,
                                             RCUUID.CONTROL_EVENT_ARRAY,
+                                            RCUUID.CONTROL_UI_UPDATE,
                                             RCUUID.CONTROL_CONFIG_DATA_ARRAY,
                                             RCUUID.CONTROL_ORIENTATION,
                                             RCUUID.PROTOCOL_VERSION]
@@ -364,7 +397,9 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                                      color: ColorType(rawValue: color) ?? ColorType.gold,
                                      cell: CGRect(x: x, y: y, width: r, height: c),
                                      text: names[i],
-                                     config: configData[i])
+                                     config: configData[i],
+                                     index: -1,
+                                     view: nil)
                 d.controls.append(ci)
             }
             
@@ -404,19 +439,25 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             
             var controlIndex = 0
             
-            for info in d.controls {
+            for index in d.controls.indices {
+                let info = d.controls[index]
                 
                 // calculate control frame
                 var rect = info.cell
                 rect = rect.applying(CGAffineTransform(scaleX: cw, y: ch))
                 rect = rect.insetBy(dx: padding, dy: padding)
                 
-                // create control
+                // create control, and set their "tag" so
+                // we can identify them with the remote Arduino device
                 let view = createControlBy(info: info, frame: rect, useTag: controlIndex)
-                controlIndex += 1
+                d.controls[index].index = controlIndex
+                d.controls[index].view = view
                 
                 // insert to view
                 self.remoteView.addSubview(view)
+                
+                // increase tag/index
+                controlIndex += 1
             }
             
         }
@@ -433,6 +474,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             label.frame = frame
             label.text = info.text
             label.layer.cornerRadius = 10
+            label.tag = useTag
             return label
             
         case .pushButton,

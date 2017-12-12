@@ -42,6 +42,9 @@ class RCUUID {
     // Array of UINT8[4], (event, event data, user data, seq id) that represents event of each control
     static let CONTROL_EVENT_ARRAY = CBUUID(string: "b5d2ff7b-6eff-4fb5-9b72-6b9cff5181e7")
     
+    // Array of UINT8[4], (event, event data, user data, seq id) that represents event of each control
+    static let CONTROL_UI_UPDATE = CBUUID(string: "e4b1ddfe-eb37-4c78-aba8-c5fa944775cb")
+    
     // Array of UINT16[4], (data1, data2, data3, data4) for each control's value or data setting
     // Current use cases:
     //  - Slider : (min value, max value, initial value, reserved)
@@ -109,7 +112,16 @@ struct ControlInfo {
     var cell : CGRect       // coordinate in Remote Grid, not actual screen space.
     var text : String       // control label text
     var config : ControlConfig
+    var index : Int         // index of the control. The same as the tag.
+    weak var view : UIView? // weak reference to the created control
 }
+
+struct UIUpdateInfo {
+    var seq : UInt8            // from Device, increment sequence serial number
+    var controlIndex : UInt8   // from Device, index into the control array of the event origin
+    var dataSize : UInt32      // from Device, data length in bytes. The type is implicitly defined by the type of the control.
+    var data : Character       // from Device, data of the event. May be Int, Float, or String
+};
 
 class Device {
     //MARK: properties
