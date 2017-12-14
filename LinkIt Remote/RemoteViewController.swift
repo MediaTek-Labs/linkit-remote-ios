@@ -48,15 +48,15 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         connect()
     }
     
-    func buttonUp(button : UIButton, forEvent event: UIControlEvents) {
+    @objc func buttonUp(button : UIButton, forEvent event: UIControlEvents) {
         sendRemoteEvent(index: button.tag, event: .valueChange, data: 0)
     }
     
-    func buttonDown(button : UIButton, forEvent event: UIControlEvents) {
+    @objc func buttonDown(button : UIButton, forEvent event: UIControlEvents) {
         sendRemoteEvent(index: button.tag, event: .valueChange, data: 1)
     }
     
-    func delayedSend(_ timer : Timer) {
+    @objc func delayedSend(_ timer : Timer) {
         if let info = timer.userInfo as? (Int, Int) {
             let (tag, sliderVal) = info
             self.sendRemoteEvent(index: tag, event: .valueChange, data: sliderVal)
@@ -65,7 +65,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         self.sliderEventTimer = nil
     }
     
-    func sliderChanged(slider: UISlider) {
+    @objc func sliderChanged(slider: UISlider) {
         let sliderEvent : (Int, Int) = (slider.tag, Int(slider.value))
         // check if 0.3 second has passed before previous
         if self.sliderEventTimer == nil {
@@ -78,7 +78,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         }
     }
     
-    func sliderReleased(slider: UISlider) {
+    @objc func sliderReleased(slider: UISlider) {
         let sliderEvent : (Int, Int) = (slider.tag, Int(slider.value))
         // cancel previous events and send event immediately
         self.sliderEventTimer?.invalidate()
@@ -87,7 +87,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         self.sendRemoteEvent(index: tag, event: .valueChange, data: value)
     }
     
-    func switched(button : UISwitch) {
+    @objc func switched(button : UISwitch) {
         let event = ControlEvent.valueChange
         sendRemoteEvent(index: button.tag, event: event, data: button.isOn ? 1 : 0)
     }

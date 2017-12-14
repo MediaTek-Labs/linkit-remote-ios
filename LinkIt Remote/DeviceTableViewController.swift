@@ -202,7 +202,7 @@ class DeviceTableViewController: UITableViewController, CBCentralManagerDelegate
         Timer.scheduledTimer(timeInterval: SCAN_DURATION, target: self, selector: #selector(self.stopScan), userInfo: nil, repeats: false)
     }
     
-    func stopScan() {
+    @objc func stopScan() {
         // stop scanning, stop timer and then reset counter
         self.manager?.stopScan()
         self.scanProgressView.isHidden = true
