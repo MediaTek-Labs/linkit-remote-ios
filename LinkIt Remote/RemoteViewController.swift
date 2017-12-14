@@ -277,20 +277,16 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     }
     
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        
         if(characteristic == self.eventCharacteristic) {
             if self.sendingActions.isEmpty {
                 self.isSendingValue = false
-                print("no more action")
             } else {
                 // keep send next request
                 print("send next action")
                 let action = self.sendingActions.removeFirst()
                 action();
             }
-            
         }
-        
         if let e = error {
             print("error writing characteristic \(characteristic.uuid) : error: \(e)")
         }
