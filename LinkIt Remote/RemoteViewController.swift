@@ -249,13 +249,18 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             
             // for UI text update
             if let updateInfoData = characteristic.value {
-                
-                // retrieve control index and text to update
-                let (controlIndex, text) = updateInfoData.withUnsafeBytes({(body:UnsafePointer<UIUpdateInfo>) -> (Int, String) in
-                    var info = body.pointee
-                    let textData = Data(bytes: &info.data, count: Int(info.dataSize))
-                    let textString = String(data: textData, encoding: String.Encoding.utf8) ?? NSLocalizedString("Transmission Error", comment: "")
-                    return (Int(info.controlIndex), textString)
+                // retrieve control index and text length from header
+                let (controlIndex, dataSize) = updateInfoData.withUnsafeBytes({(body:UnsafePointer<UIUpdateInfoHeader>) -> (Int, Int) in
+                    return (Int(body.pointee.controlIndex), Int(body.pointee.dataSize))
+                })
+
+                // retrive the text, which is immediately following the header
+                let text : String = updateInfoData.withUnsafeBytes({(body: UnsafePointer<CChar>) -> String in
+                    // skip the header and copy the text data
+                    let textData = Data(bytes: body.advanced(by: MemoryLayout<UIUpdateInfoHeader>.size), count: dataSize)
+                    // decode as UTF-8 string.
+                    // if fails, we show an error string.
+                    return String(data: textData, encoding: String.Encoding.utf8) ?? NSLocalizedString("Transmission Error", comment: "")
                 })
                 
                 // find the view object with the control index, and check if it is an UILabel

@@ -116,11 +116,11 @@ struct ControlInfo {
     weak var view : UIView? // weak reference to the created control
 }
 
-struct UIUpdateInfo {
+struct UIUpdateInfoHeader {
     var seq : UInt8            // from Device, increment sequence serial number
     var controlIndex : UInt8   // from Device, index into the control array of the event origin
     var dataSize : UInt32      // from Device, data length in bytes. The type is implicitly defined by the type of the control.
-    var data : Character       // from Device, data of the event. May be Int, Float, or String
+    // The update data is followed immediately
 };
 
 class Device {
