@@ -117,16 +117,15 @@ struct ControlInfo {
 }
 
 struct UIUpdateInfoHeader {
-    var seq : UInt8            // from Device, increment sequence serial number
     var controlIndex : UInt8   // from Device, index into the control array of the event origin
-    var dataSize : UInt32      // from Device, data length in bytes. The type is implicitly defined by the type of the control.
+    var dataSize : UInt8      // from Device, data length in bytes. The type is implicitly defined by the type of the control.
     // The update data is followed immediately
 };
 
 class Device {
     //MARK: properties
     
-    static let PROTOCAL_VERSION = 2
+    static let PROTOCAL_VERSION = 3
     
     var name : String
     var address : String
