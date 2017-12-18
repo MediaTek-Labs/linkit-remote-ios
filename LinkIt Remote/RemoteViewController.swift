@@ -289,7 +289,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 // keep send next request
                 print("send next action")
                 let action = self.sendingActions.removeFirst()
-                action();
+                action()
             }
         }
         if let e = error {
@@ -568,8 +568,9 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
                 }
                 // 6 bytes of EventInfo
                 eventData.reserveCapacity(6)
-                eventData[0] = self.eventSeq                       // sequence number - increment it
-                self.self.eventSeq += 1
+                eventData[0] = self.eventSeq            // sequence number - increment it
+                let counter : Int = Int(self.eventSeq) + 1
+                self.eventSeq = counter > 255 ? 0 : UInt8(counter)
                 eventData[1] = UInt8(index)
                 eventData[2] = event.rawValue           // Event
                 // eventData[3] =                       // These are processed by Arduno side - don't touch
