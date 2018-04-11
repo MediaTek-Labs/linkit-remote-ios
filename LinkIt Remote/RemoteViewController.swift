@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBluetooth
+import JoystickView
 
 func readInt(data : Data) -> Int {
     return Int(data.withUnsafeBytes({(body : UnsafePointer<Int32>) -> Int32 in
@@ -358,20 +359,20 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             d.orientation = readInt(data: settings[RCUUID.CONTROL_ORIENTATION]!.value!) == 1 ?
                                     .landscapeRight : .portrait
             let version = readInt(data: settings[RCUUID.PROTOCOL_VERSION]!.value!)
-            let controlCount = readInt(data: settings[RCUUID.CONTROL_COUNT]!.value!)
             
             let typeArray = settings[RCUUID.CONTROL_TYPE_ARRAY]!.value!
+            if version != Device.PROTOCAL_VERSION {
+                let msg = NSLocalizedString("Mismatched Version", comment: "")
+                showErrorMsg(msg)
+            }
+            
+            let controlCount = readInt(data: settings[RCUUID.CONTROL_COUNT]!.value!)
             let colorArray = settings[RCUUID.CONTROL_COLOR_ARRAY]!.value!
             let rectArray = settings[RCUUID.CONTROL_RECT_ARRAY]!.value!
             let nameData = settings[RCUUID.CONTROL_NAME_LIST]!.value!
             let nameString = String(data: nameData, encoding: String.Encoding.utf8)
             let names = nameString?.components(separatedBy: "\n") ?? []
             let configArray = settings[RCUUID.CONTROL_CONFIG_DATA_ARRAY]!.value!
-            
-            if version != Device.PROTOCAL_VERSION {
-                let msg = NSLocalizedString("Mismatched Version", comment: "")
-                showErrorMsg(msg)
-            }
             
             // collect device control info
             d.controls.removeAll()
@@ -513,7 +514,25 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             slider.slider.addTarget(self, action: #selector(RemoteViewController.sliderReleased(slider:)),
                                     for: [.touchUpInside, .touchUpOutside])
             return slider
+        case .analogStick:
+            // MARK: analog joystick
+            let colorTheme = getColorSet(info.color)
+            let substrate = UIView()
+            substrate.frame.size = frame.size
+            substrate.layer.cornerRadius = frame.size.width / 2;
+            substrate.backgroundColor = colorTheme.secondary
+            let thumb = UIView()
+            thumb.frame.size = frame.size
+            thumb.frame.size.width /= 2.0
+            thumb.frame.size.height /= 2.0
+            thumb.layer.cornerRadius = thumb.frame.width / 2;
+            thumb.backgroundColor = colorTheme.primary
             
+            let joystick = JoystickView()
+            joystick.joystickBg = substrate
+            joystick.joystickThumb = thumb
+            
+            return joystick
         case .switchButton:
             let switchPanel = UIView(frame:frame)
             let padding = CGFloat(4.0)

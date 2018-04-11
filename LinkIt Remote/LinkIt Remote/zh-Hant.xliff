@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="LinkIt Remote/Base.lproj/LaunchScreen.storyboard" source-language="en" datatype="plaintext" target-language="zh-Hant">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.3.3" build-num="8E3004b"/>
+    </header>
+    <body/>
+  </file>
+  <file original="LinkIt Remote/Base.lproj/Main.storyboard" source-language="en" datatype="plaintext" target-language="zh-Hant">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.3.3" build-num="8E3004b"/>
+    </header>
+    <body>
+      <trans-unit id="0tg-PM-CFJ.title">
+        <source>Remote Device</source>
+        <target>遠端裝置</target>
+        <note>Class = "UIViewController"; title = "Remote Device"; ObjectID = "0tg-PM-CFJ";</note>
+      </trans-unit>
+      <trans-unit id="2DY-e6-BWj.text">
+        <source>Disconnected. Tap Refresh button to connect again.</source>
+        <target>裝置斷線，請點擊重新整理按鈕來重新連線</target>
+        <note>Class = "UILabel"; text = "Disconnected. Tap Refresh button to connect again."; ObjectID = "2DY-e6-BWj";</note>
+      </trans-unit>
+      <trans-unit id="AhM-LA-4YX.title">
+        <source>Device</source>
+        <target>裝置</target>
+        <note>Class = "UINavigationItem"; title = "Device"; ObjectID = "AhM-LA-4YX";</note>
+      </trans-unit>
+      <trans-unit id="HtC-g3-0N5.text">
+        <source>Device Name</source>
+        <target>裝置名稱</target>
+        <note>Class = "UILabel"; text = "Device Name"; ObjectID = "HtC-g3-0N5";</note>
+      </trans-unit>
+      <trans-unit id="dzQ-mz-hdd.text">
+        <source>RSSI Label</source>
+        <target>RSSI強度</target>
+        <note>Class = "UILabel"; text = "RSSI Label"; ObjectID = "dzQ-mz-hdd";</note>
+      </trans-unit>
+      <trans-unit id="qNz-NI-Zrr.title">
+        <source>Devices</source>
+        <target>裝置列表</target>
+        <note>Class = "UINavigationItem"; title = "Devices"; ObjectID = "qNz-NI-Zrr";</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="LinkIt Remote/Info.plist" source-language="en" datatype="plaintext" target-language="zh-Hant">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.3.3" build-num="8E3004b"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.0</source>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="LinkIt RemoteTests/Info.plist" source-language="en" datatype="plaintext" target-language="zh-Hant">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.3.3" build-num="8E3004b"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.0</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

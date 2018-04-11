@@ -1,0 +1,16 @@
+PODS:
+  - JoystickView (0.2.0)
+
+DEPENDENCIES:
+  - JoystickView
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - JoystickView
+
+SPEC CHECKSUMS:
+  JoystickView: fd606fa33ba1cb30d2a4198529ddf5c634d48f1b
+
+PODFILE CHECKSUM: 06e3605413e72513c779faaf7ad605746a206f5a
+
+COCOAPODS: 1.5.0

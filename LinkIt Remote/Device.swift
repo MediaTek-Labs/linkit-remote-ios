@@ -65,6 +65,7 @@ enum ControlType : UInt8 {
     case circleButton = 3
     case switchButton = 4
     case slider = 5
+    case analogStick = 6
 }
 
 enum ControlEvent : UInt8 {
@@ -125,7 +126,7 @@ struct UIUpdateInfoHeader {
 class Device {
     //MARK: properties
     
-    static let PROTOCAL_VERSION = 3
+    static let PROTOCAL_VERSION = 4
     
     var name : String
     var address : String
