@@ -7,6 +7,6 @@
 */
 "Bluetooth Message" = "請先啟用藍牙";
 "Disconnected Message" = "裝置斷線，請點擊重新整理按鈕來重新連線。";
-"Mismatched Version" = "版本不符。請將您的Arduino支援包升級至v0.10.7之後的版本。";
+"Mismatched Version" = "版本不符。請將您的Arduino支援包升級至 v0.10.16 之後的版本。";
 "Transmission Error" = "傳輸錯誤";
 

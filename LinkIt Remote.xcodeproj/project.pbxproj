@@ -11,7 +11,6 @@
 		CA9E725E5A4E2C68F4B0A817 /* Pods_LinkIt_Remote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCE385EBE2E61F5145B822E /* Pods_LinkIt_Remote.framework */; };
 		FC28274F1F5FED1B00A675E8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC2827511F5FED1B00A675E8 /* InfoPlist.strings */; };
 		FC3013FE1F60F8DC00BC21DA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC3014001F60F8DC00BC21DA /* Localizable.strings */; };
-		FC30F254207CB1AF00B70D40 /* AnalogJoystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC30F253207CB1AF00B70D40 /* AnalogJoystick.swift */; };
 		FC58E77E1F4EC823001A9038 /* SliderPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC58E77D1F4EC823001A9038 /* SliderPanel.xib */; };
 		FC58E7801F4EC835001A9038 /* SliderPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58E77F1F4EC835001A9038 /* SliderPanel.swift */; };
 		FC58E7821F4FD26D001A9038 /* ColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC58E7811F4FD26D001A9038 /* ColorSet.swift */; };
@@ -54,7 +53,6 @@
 		FC3013FF1F60F8DC00BC21DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FC3014011F60F8DE00BC21DA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FC3014021F60F8DF00BC21DA /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		FC30F253207CB1AF00B70D40 /* AnalogJoystick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalogJoystick.swift; sourceTree = "<group>"; };
 		FC58E77D1F4EC823001A9038 /* SliderPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SliderPanel.xib; sourceTree = "<group>"; };
 		FC58E77F1F4EC835001A9038 /* SliderPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderPanel.swift; sourceTree = "<group>"; };
 		FC58E7811F4FD26D001A9038 /* ColorSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSet.swift; sourceTree = "<group>"; };
@@ -138,7 +136,6 @@
 				FCEF8E071F4D219100587029 /* Device.swift */,
 				FC6D57601F4D291B001C8558 /* RemoteViewController.swift */,
 				FC58E7831F4FD30D001A9038 /* RemoteUIButton.swift */,
-				FC30F253207CB1AF00B70D40 /* AnalogJoystick.swift */,
 				FC58E7851F4FD33E001A9038 /* RemoteUILabel.swift */,
 				FC58E77F1F4EC835001A9038 /* SliderPanel.swift */,
 				FC58E77D1F4EC823001A9038 /* SliderPanel.xib */,
@@ -343,7 +340,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC58E7861F4FD33E001A9038 /* RemoteUILabel.swift in Sources */,
-				FC30F254207CB1AF00B70D40 /* AnalogJoystick.swift in Sources */,
 				FC6D57631F4D2D7D001C8558 /* DeviceTableViewCell.swift in Sources */,
 				FC58E7821F4FD26D001A9038 /* ColorSet.swift in Sources */,
 				FC58E7801F4EC835001A9038 /* SliderPanel.swift in Sources */,

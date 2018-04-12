@@ -21,7 +21,7 @@ struct RemoteQueryContext {
     var toRead = Set<CBCharacteristic>()
 }
 
-class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
+class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate, JoystickViewDelegate {
     @IBOutlet weak var navBar: UINavigationItem!
     @IBOutlet weak var remoteView: UIView!
     @IBOutlet var canvas: UIView!
@@ -91,6 +91,49 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     @objc func switched(button : UISwitch) {
         let event = ControlEvent.valueChange
         sendRemoteEvent(index: button.tag, event: event, data: button.isOn ? 1 : 0)
+    }
+    
+    // MARK: Joystick event callback
+    func joystickView(_ joystickView: JoystickView, didMoveto x: Float, y: Float, direction: JoystickMoveDriection) {
+        // We drop the "direction" value, since we represents analog joysticks.
+        //
+        // Pack the x and y values into a single integer:
+        // 1) map value range of x and y from [-1.0, 1.0] to [-127, 127] to [0, 254] in byte
+        // 2) X => high byte, Y => low byte
+        //
+        // The receiving end (LinkIt) have to unpack the values by itself.
+        func convertRange(_ value: Float) -> UInt8 {
+            var v = value * 128 + 127;
+            if(v < 0) {
+                v = 0
+            } else if (v > 255) {
+                v = 255;
+            }
+            return UInt8(v)
+        }
+        let byteX = convertRange(x)
+        let byteY = convertRange(y)
+        let data = Int((Int(byteX) << 8) | Int(byteY))
+        print("joystick(\(joystickView.tag)) move to x:\(byteX) y:\(byteY) direction:\(direction.rawValue)")
+        
+        let stickEvent : (Int, Int) = (joystickView.tag, Int(data))
+        // check if 0.3 second has passed before previous
+        if self.sliderEventTimer == nil {
+            self.sliderEventTimer = Timer.scheduledTimer(timeInterval: SLIDER_UPDATE_INTERVAL,
+                                                         target: self,
+                                                         selector: #selector(self.delayedSend(_:)),
+                                                         userInfo: stickEvent,
+                                                         repeats: false)
+            
+        }
+    }
+    
+    func joystickViewDidEndMoving(_ joystickView: JoystickView) {
+        // cancel previous events and send event immediately
+        self.sliderEventTimer?.invalidate()
+        self.sliderEventTimer = nil
+        let data = Int((Int(127) << 8) | Int(127))
+        sendRemoteEvent(index: joystickView.tag, event: .btnUp, data: data)
     }
     
     @IBAction func done(_ sender: Any) {
@@ -518,21 +561,29 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
             // MARK: analog joystick
             let colorTheme = getColorSet(info.color)
             let substrate = UIView()
-            substrate.frame.size = frame.size
-            substrate.layer.cornerRadius = frame.size.width / 2;
+            let shortSide = min(frame.size.width, frame.size.height)
+            let sqaureFrame = frame.insetBy(dx: (frame.size.width - shortSide) / 2,
+                                            dy: (frame.size.height - shortSide) / 2);
+            substrate.frame = sqaureFrame
+            substrate.frame.origin = .zero
+            substrate.layer.cornerRadius = substrate.frame.width / 2;
             substrate.backgroundColor = colorTheme.secondary
             let thumb = UIView()
-            thumb.frame.size = frame.size
-            thumb.frame.size.width /= 2.0
-            thumb.frame.size.height /= 2.0
+            thumb.frame = substrate.frame.insetBy(dx: shortSide / 4, dy: shortSide / 4)
             thumb.layer.cornerRadius = thumb.frame.width / 2;
             thumb.backgroundColor = colorTheme.primary
-            
+
             let joystick = JoystickView()
+            joystick.tag = useTag
+            joystick.frame = sqaureFrame
             joystick.joystickBg = substrate
+            joystick.addSubview(substrate)
             joystick.joystickThumb = thumb
-            
+            joystick.addSubview(thumb)
+            joystick.form = .around
+            joystick.delegate = self
             return joystick
+            
         case .switchButton:
             let switchPanel = UIView(frame:frame)
             let padding = CGFloat(4.0)

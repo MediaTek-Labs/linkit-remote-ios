@@ -7,5 +7,5 @@
 */
 "Bluetooth Message" = "Please enable Bluetooth first";
 "Disconnected Message" = "Disconnected. Tap Refresh button to connect again.";
-"Mismatched Version" = "Unmatched library. Please upgrade your Arduino BSP Package to v0.10.7 or later.";
+"Mismatched Version" = "Unmatched library. Please upgrade your Arduino BSP Package to v0.10.16 or later.";
 "Transmission Error" = "Transmission Error";
