@@ -51,10 +51,12 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     
     @objc func buttonUp(button : UIButton, forEvent event: UIControlEvents) {
         sendRemoteEvent(index: button.tag, event: .valueChange, data: 0)
+        print("buttonUp sent")
     }
     
     @objc func buttonDown(button : UIButton, forEvent event: UIControlEvents) {
         sendRemoteEvent(index: button.tag, event: .valueChange, data: 1)
+        print("buttonDown sent")
     }
     
     @objc func delayedSend(_ timer : Timer) {
@@ -98,23 +100,26 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         // We drop the "direction" value, since we represents analog joysticks.
         //
         // Pack the x and y values into a single integer:
-        // 1) map value range of x and y from [-1.0, 1.0] to [-127, 127] to [0, 254] in byte
+        // 1) map value range of x and y from [-1.0, 1.0] to [-100, 100] in byte
         // 2) X => high byte, Y => low byte
         //
         // The receiving end (LinkIt) have to unpack the values by itself.
-        func convertRange(_ value: Float) -> UInt8 {
-            var v = value * 128 + 127;
-            if(v < 0) {
-                v = 0
-            } else if (v > 255) {
-                v = 255;
+        func convertRange(_ value: Float) -> Int8 {
+            let valueRange = Float(100)
+            let valueMax = valueRange
+            let valueMin = Float(-1.0 * valueRange)
+            var v = value * valueRange;
+            if(v < valueMin) {
+                v = valueMin
+            } else if (v > valueMax) {
+                v = valueMax;
             }
-            return UInt8(v)
+            return Int8(v)
         }
         let byteX = convertRange(x)
         let byteY = convertRange(y)
-        let data = Int((Int(byteX) << 8) | Int(byteY))
-        print("joystick(\(joystickView.tag)) move to x:\(byteX) y:\(byteY) direction:\(direction.rawValue)")
+        let data = Int((Int(byteX) << 8) | (Int(byteY) & 0xFF))
+        print("joystick(\(joystickView.tag)) move to x:\(byteX) y:\(byteY) => data:\(String(data, radix: 2))")
         
         let stickEvent : (Int, Int) = (joystickView.tag, Int(data))
         // check if 0.3 second has passed before previous
@@ -132,8 +137,7 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         // cancel previous events and send event immediately
         self.sliderEventTimer?.invalidate()
         self.sliderEventTimer = nil
-        let data = Int((Int(127) << 8) | Int(127))
-        sendRemoteEvent(index: joystickView.tag, event: .btnUp, data: data)
+        sendRemoteEvent(index: joystickView.tag, event: .btnUp, data: 0)
     }
     
     @IBAction func done(_ sender: Any) {
