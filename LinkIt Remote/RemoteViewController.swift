@@ -9,6 +9,7 @@
 import UIKit
 import CoreBluetooth
 import JoystickView
+import Dispatch
 
 func readInt(data : Data) -> Int {
     return Int(data.withUnsafeBytes({(body : UnsafePointer<Int32>) -> Int32 in
@@ -42,7 +43,8 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
     var isSendingValue = false
     var sendingActions = [() -> Void]()
     var sliderEventTimer : Timer?
-    let SLIDER_UPDATE_INTERVAL = 0.1    // update slider value when dragging. Unit is second.
+    let SLIDER_UPDATE_INTERVAL = 0.25    // update slider value when dragging. Unit is second.
+    var joystickLastUpdate = [Int: DispatchTime]()
 
     //MARK: actions
     @IBAction func refreshDevice(_ sender: Any) {
@@ -119,17 +121,19 @@ class RemoteViewController: UIViewController, CBCentralManagerDelegate, CBPeriph
         let byteX = convertRange(x)
         let byteY = convertRange(y)
         let data = Int((Int(byteX) << 8) | (Int(byteY) & 0xFF))
-        print("joystick(\(joystickView.tag)) move to x:\(byteX) y:\(byteY) => data:\(String(data, radix: 2))")
+        let currentTime = DispatchTime.now()
+        let controlTag = joystickView.tag
         
-        let stickEvent : (Int, Int) = (joystickView.tag, Int(data))
-        // check if 0.3 second has passed before previous
-        if self.sliderEventTimer == nil {
-            self.sliderEventTimer = Timer.scheduledTimer(timeInterval: SLIDER_UPDATE_INTERVAL,
-                                                         target: self,
-                                                         selector: #selector(self.delayedSend(_:)),
-                                                         userInfo: stickEvent,
-                                                         repeats: false)
-            
+        if let lastTime = self.joystickLastUpdate[controlTag] {
+            if (currentTime.uptimeNanoseconds - lastTime.uptimeNanoseconds) > UInt64(SLIDER_UPDATE_INTERVAL * 1000000000) {
+                self.sendRemoteEvent(index: controlTag, event: .valueChange, data: data)
+                self.joystickLastUpdate[controlTag] = currentTime;
+            } else {
+                print("skip event for joystick \(joystickView.tag)")
+            }
+        } else {
+            self.sendRemoteEvent(index: controlTag, event: .valueChange, data: data)
+            self.joystickLastUpdate[controlTag] = currentTime;
         }
     }
     
